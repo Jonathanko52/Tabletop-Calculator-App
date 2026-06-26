@@ -84,6 +84,15 @@ class ArmyOut(ArmyBase):
     model_config = {"from_attributes": True}
 
 
+# --- Import ---
+
+class ArmyImport(BaseModel):
+    name: str
+    faction: str
+    points_limit: int = 2000
+    units: list[UnitCreate] = []
+
+
 # --- Effectiveness ---
 
 class WeaponEffectiveness(BaseModel):

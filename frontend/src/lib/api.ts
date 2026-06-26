@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, Unit, UnitCreate, UnitEffectivenessOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitEffectivenessOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -29,6 +29,9 @@ export const updateArmy = (id: number, data: ArmyCreate) =>
 
 export const deleteArmy = (id: number) =>
   request<void>(`/armies/${id}`, { method: "DELETE" });
+
+export const importArmy = (data: ArmyImport) =>
+  request<Army>("/armies/import", { method: "POST", body: JSON.stringify(data) });
 
 // --- Units ---
 

@@ -48,3 +48,27 @@ def delete_army(army_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Army not found")
     db.delete(army)
     db.commit()
+
+
+@router.post("/import", response_model=schemas.ArmyOut, status_code=201)
+def import_army(payload: schemas.ArmyImport, db: Session = Depends(get_db)):
+    army = models.Army(
+        name=payload.name,
+        faction=payload.faction,
+        points_limit=payload.points_limit,
+    )
+    db.add(army)
+    db.flush()
+
+    for unit_data in payload.units:
+        data = unit_data.model_dump()
+        weapons_data = data.pop("weapons", [])
+        unit = models.Unit(army_id=army.id, **data)
+        db.add(unit)
+        db.flush()
+        for w in weapons_data:
+            db.add(models.Weapon(unit_id=unit.id, **w))
+
+    db.commit()
+    db.refresh(army)
+    return army

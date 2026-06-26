@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import type { Army, ArmyCreate, UnitCreate } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, UnitCreate } from "@/types";
 import * as api from "@/lib/api";
 import ArmySidebar from "@/components/army/ArmySidebar";
 import ArmyDetail from "@/components/army/ArmyDetail";
@@ -33,6 +33,12 @@ export default function ArmyPage() {
 
   async function handleCreateArmy(data: ArmyCreate) {
     const army = await api.createArmy(data);
+    await loadArmies();
+    setSelectedId(army.id);
+  }
+
+  async function handleImportArmy(data: ArmyImport) {
+    const army = await api.importArmy(data);
     await loadArmies();
     setSelectedId(army.id);
   }
@@ -92,7 +98,7 @@ export default function ArmyPage() {
         selectedId={selectedId}
         onSelect={(a) => setSelectedId(a.id)}
         onCreate={handleCreateArmy}
-        onDelete={handleDeleteArmy}
+        onImport={handleImportArmy}
       />
 
       {selectedArmy ? (

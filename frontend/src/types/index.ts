@@ -65,6 +65,13 @@ export interface ArmyCreate {
   points_limit: number;
 }
 
+export interface ArmyImport {
+  name: string;
+  faction: string;
+  points_limit: number;
+  units: UnitCreate[];
+}
+
 export interface WeaponEffectiveness {
   weapon_name: string;
   weapon_type: string;
