@@ -93,6 +93,26 @@ class ArmyImport(BaseModel):
     units: list[UnitCreate] = []
 
 
+# --- Unit Templates ---
+
+class WeaponTemplateOut(WeaponBase):
+    id: int
+    unit_template_id: int
+
+    model_config = {"from_attributes": True}
+
+
+class UnitTemplateCreate(UnitBase):
+    weapons: list[WeaponCreate] = []
+
+
+class UnitTemplateOut(UnitBase):
+    id: int
+    weapons: list[WeaponTemplateOut] = []
+
+    model_config = {"from_attributes": True}
+
+
 # --- Effectiveness ---
 
 class WeaponEffectiveness(BaseModel):

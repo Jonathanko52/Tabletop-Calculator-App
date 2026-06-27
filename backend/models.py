@@ -50,3 +50,37 @@ class Weapon(Base):
     special = Column(String, default="")
 
     unit = relationship("Unit", back_populates="weapons")
+
+
+class UnitTemplate(Base):
+    __tablename__ = "unit_templates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    points_cost = Column(Integer, nullable=False, default=0)
+    movement = Column(Integer, default=6)
+    toughness = Column(Integer, default=4)
+    save = Column(Integer, default=4)
+    wounds = Column(Integer, default=1)
+    leadership = Column(Integer, default=7)
+    oc = Column(Integer, default=1)
+
+    weapons = relationship("WeaponTemplate", back_populates="unit_template", cascade="all, delete-orphan")
+
+
+class WeaponTemplate(Base):
+    __tablename__ = "weapon_templates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    unit_template_id = Column(Integer, ForeignKey("unit_templates.id"), nullable=False)
+    weapon_type = Column(String, nullable=False, default="ranged")
+    name = Column(String, nullable=False)
+    range = Column(Integer, default=0)
+    attacks = Column(String, default="1")
+    bs_ws = Column(Integer, default=4)
+    strength = Column(Integer, default=4)
+    ap = Column(Integer, default=0)
+    damage = Column(String, default="1")
+    special = Column(String, default="")
+
+    unit_template = relationship("UnitTemplate", back_populates="weapons")
