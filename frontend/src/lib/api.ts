@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitEffectivenessOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -43,6 +43,20 @@ export const updateUnit = (unitId: number, data: UnitCreate) =>
 
 export const deleteUnit = (unitId: number) =>
   request<void>(`/units/${unitId}`, { method: "DELETE" });
+
+// --- Unit Templates ---
+
+export const getUnitTemplates = () =>
+  request<UnitTemplate[]>("/unit-templates/");
+
+export const createUnitTemplate = (data: UnitTemplateCreate) =>
+  request<UnitTemplate>("/unit-templates/", { method: "POST", body: JSON.stringify(data) });
+
+export const deleteUnitTemplate = (id: number) =>
+  request<void>(`/unit-templates/${id}`, { method: "DELETE" });
+
+export const importUnitTemplates = (data: UnitTemplateCreate[]) =>
+  request<UnitTemplate[]>("/unit-templates/import", { method: "POST", body: JSON.stringify(data) });
 
 // --- Effectiveness ---
 

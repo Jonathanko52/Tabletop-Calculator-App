@@ -72,6 +72,45 @@ export interface ArmyImport {
   units: UnitCreate[];
 }
 
+export interface WeaponTemplate {
+  id: number;
+  unit_template_id: number;
+  weapon_type: "ranged" | "melee";
+  name: string;
+  range: number;
+  attacks: string;
+  bs_ws: number;
+  strength: number;
+  ap: number;
+  damage: string;
+  special: string;
+}
+
+export interface UnitTemplate {
+  id: number;
+  name: string;
+  points_cost: number;
+  movement: number;
+  toughness: number;
+  save: number;
+  wounds: number;
+  leadership: number;
+  oc: number;
+  weapons: WeaponTemplate[];
+}
+
+export interface UnitTemplateCreate {
+  name: string;
+  points_cost: number;
+  movement: number;
+  toughness: number;
+  save: number;
+  wounds: number;
+  leadership: number;
+  oc: number;
+  weapons: WeaponCreate[];
+}
+
 export interface WeaponEffectiveness {
   weapon_name: string;
   weapon_type: string;
