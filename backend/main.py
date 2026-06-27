@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from database import engine, get_db
 import models
 import schemas
-from routers import armies, units
+from routers import armies, units, unit_templates
 from effectiveness.calculator import calculate_weapon_damage
 
 models.Base.metadata.create_all(bind=engine)
@@ -22,6 +22,7 @@ app.add_middleware(
 
 app.include_router(armies.router)
 app.include_router(units.router)
+app.include_router(unit_templates.router)
 
 
 @app.get("/effectiveness/{unit_id}", response_model=schemas.UnitEffectivenessOut)
