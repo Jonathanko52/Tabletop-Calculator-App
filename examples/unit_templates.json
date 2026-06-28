@@ -1,0 +1,217 @@
+[
+  {
+    "name": "Intercessor Squad",
+    "points_cost": 85,
+    "movement": 6,
+    "toughness": 4,
+    "save": 3,
+    "wounds": 2,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Bolt Rifle",
+        "range": 30,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": -1,
+        "damage": "1",
+        "special": "Rapid Fire 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Close Combat Weapon",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": ""
+      }
+    ]
+  },
+  {
+    "name": "Devastator Squad",
+    "points_cost": 110,
+    "movement": 6,
+    "toughness": 4,
+    "save": 3,
+    "wounds": 2,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Lascannon",
+        "range": 48,
+        "attacks": "1",
+        "bs_ws": 3,
+        "strength": 12,
+        "ap": -3,
+        "damage": "D6",
+        "special": ""
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Bolt Pistol",
+        "range": 12,
+        "attacks": "1",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Pistol"
+      }
+    ]
+  },
+  {
+    "name": "Dreadnought",
+    "points_cost": 130,
+    "movement": 6,
+    "toughness": 9,
+    "save": 2,
+    "wounds": 8,
+    "leadership": 6,
+    "oc": 3,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Assault Cannon",
+        "range": 24,
+        "attacks": "6",
+        "bs_ws": 3,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": ""
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Dreadnought Combat Weapon",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 3,
+        "strength": 12,
+        "ap": -2,
+        "damage": "3",
+        "special": ""
+      }
+    ]
+  },
+  {
+    "name": "Tactical Squad",
+    "points_cost": 75,
+    "movement": 6,
+    "toughness": 4,
+    "save": 3,
+    "wounds": 2,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Boltgun",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Rapid Fire 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Close Combat Weapon",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": ""
+      }
+    ]
+  },
+  {
+    "name": "Eliminator Squad",
+    "points_cost": 75,
+    "movement": 6,
+    "toughness": 4,
+    "save": 3,
+    "wounds": 2,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Bolt Sniper Rifle",
+        "range": 36,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "3",
+        "special": "Heavy, Precision"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Close Combat Weapon",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": ""
+      }
+    ]
+  },
+  {
+    "name": "Land Raider",
+    "points_cost": 235,
+    "movement": 10,
+    "toughness": 12,
+    "save": 2,
+    "wounds": 16,
+    "leadership": 6,
+    "oc": 5,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Twin Lascannon",
+        "range": 48,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 12,
+        "ap": -3,
+        "damage": "D6",
+        "special": "Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Heavy Bolter",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 3,
+        "strength": 5,
+        "ap": -1,
+        "damage": "2",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured Tracks",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 4,
+        "strength": 8,
+        "ap": 0,
+        "damage": "1",
+        "special": ""
+      }
+    ]
+  }
+]
