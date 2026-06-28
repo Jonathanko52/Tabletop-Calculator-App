@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { Army, ArmyCreate, ArmyImport } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, UnitTemplate, UnitTemplateCreate } from "@/types";
 import ImportPanel from "./ImportPanel";
+import LibraryPanel from "./LibraryPanel";
 
 interface Props {
   armies: Army[];
@@ -10,13 +11,19 @@ interface Props {
   onSelect: (army: Army) => void;
   onCreate: (data: ArmyCreate) => Promise<void>;
   onImport: (data: ArmyImport) => Promise<void>;
+  unitTemplates: UnitTemplate[];
+  onImportTemplates: (data: UnitTemplateCreate[]) => Promise<void>;
+  onDeleteTemplate: (id: number) => Promise<void>;
 }
 
-type Mode = "none" | "new" | "import";
+type Mode = "none" | "new" | "import" | "library";
 
 const EMPTY_FORM: ArmyCreate = { name: "", faction: "", points_limit: 2000 };
 
-export default function ArmySidebar({ armies, selectedId, onSelect, onCreate, onImport }: Props) {
+export default function ArmySidebar({
+  armies, selectedId, onSelect, onCreate, onImport,
+  unitTemplates, onImportTemplates, onDeleteTemplate,
+}: Props) {
   const [mode, setMode] = useState<Mode>("none");
   const [form, setForm] = useState<ArmyCreate>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
@@ -43,7 +50,7 @@ export default function ArmySidebar({ armies, selectedId, onSelect, onCreate, on
     <aside className="w-64 shrink-0 flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <h2 className="font-semibold text-gray-300 text-sm uppercase tracking-widest">Armies</h2>
-        <div className="flex gap-1">
+        <div className="flex gap-1 flex-wrap justify-end">
           <button
             onClick={() => toggle("new")}
             className="text-xs px-2 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white"
@@ -55,6 +62,17 @@ export default function ArmySidebar({ armies, selectedId, onSelect, onCreate, on
             className="text-xs px-2 py-1 rounded bg-gray-700 hover:bg-gray-600 text-gray-200"
           >
             {mode === "import" ? "Cancel" : "Import"}
+          </button>
+          <button
+            onClick={() => toggle("library")}
+            className={[
+              "text-xs px-2 py-1 rounded transition-colors",
+              mode === "library"
+                ? "bg-amber-600 text-white"
+                : "bg-gray-700 hover:bg-gray-600 text-gray-200",
+            ].join(" ")}
+          >
+            Library
           </button>
         </div>
       </div>
@@ -90,6 +108,14 @@ export default function ArmySidebar({ armies, selectedId, onSelect, onCreate, on
 
       {mode === "import" && (
         <ImportPanel onImport={handleImport} onCancel={() => setMode("none")} />
+      )}
+
+      {mode === "library" && (
+        <LibraryPanel
+          templates={unitTemplates}
+          onImport={onImportTemplates}
+          onDelete={onDeleteTemplate}
+        />
       )}
 
       <ul className="flex flex-col gap-1">

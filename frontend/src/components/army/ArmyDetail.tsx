@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { Army, Unit, UnitCreate, ArmyCreate } from "@/types";
+import type { Army, Unit, UnitCreate, UnitTemplate, ArmyCreate } from "@/types";
 import UnitCard from "./UnitCard";
 import UnitForm from "./UnitForm";
+import UnitLibraryPicker from "./UnitLibraryPicker";
 
 interface Props {
   army: Army;
+  unitTemplates: UnitTemplate[];
   onAddUnit: (data: UnitCreate) => Promise<void>;
   onUpdateUnit: (unitId: number, data: UnitCreate) => Promise<void>;
   onDeleteUnit: (unitId: number) => Promise<void>;
@@ -14,8 +16,11 @@ interface Props {
   onDeleteArmy: () => Promise<void>;
 }
 
+type AddMode = "none" | "picker" | "form-blank" | "form-template";
+
 export default function ArmyDetail({
   army,
+  unitTemplates,
   onAddUnit,
   onUpdateUnit,
   onDeleteUnit,
@@ -23,7 +28,8 @@ export default function ArmyDetail({
   onDeleteArmy,
 }: Props) {
   const [editingUnit, setEditingUnit] = useState<Unit | null>(null);
-  const [addingUnit, setAddingUnit] = useState(false);
+  const [addMode, setAddMode] = useState<AddMode>("picker");
+  const [templateSeed, setTemplateSeed] = useState<UnitTemplate | null>(null);
   const [editingArmy, setEditingArmy] = useState(false);
   const [armyForm, setArmyForm] = useState<ArmyCreate>({
     name: army.name,
@@ -35,21 +41,50 @@ export default function ArmyDetail({
   const pctUsed = Math.min(100, (totalPoints / army.points_limit) * 100);
   const overLimit = totalPoints > army.points_limit;
 
-  async function handleSaveUnit(data: UnitCreate) {
-    if (editingUnit) {
-      await onUpdateUnit(editingUnit.id, data);
-      setEditingUnit(null);
-    } else {
-      await onAddUnit(data);
-      setAddingUnit(false);
-    }
+  function handleSelectTemplate(template: UnitTemplate) {
+    setTemplateSeed(template);
+    setAddMode("form-template");
   }
 
-  async function handleSaveArmy(e: React.FormEvent) {
+  function handleCustom() {
+    setTemplateSeed(null);
+    setAddMode("form-blank");
+  }
+
+  function cancelAdd() {
+    setTemplateSeed(null);
+    setAddMode("picker");
+  }
+
+  async function handleSaveNewUnit(data: UnitCreate) {
+    await onAddUnit(data);
+    setTemplateSeed(null);
+    setAddMode("picker");
+  }
+
+  async function handleSaveEditUnit(data: UnitCreate) {
+    if (!editingUnit) return;
+    await onUpdateUnit(editingUnit.id, data);
+    setEditingUnit(null);
+  }
+
+  async function handleSaveArmy(e: React.SyntheticEvent) {
     e.preventDefault();
     await onUpdateArmy(armyForm);
     setEditingArmy(false);
   }
+
+  // Convert a UnitTemplate to the shape UnitForm expects for its `initial` prop.
+  // UnitForm only reads name/stats/weapons from initial — id and army_id are unused.
+  const seedAsUnit: Unit | undefined = templateSeed
+    ? {
+        ...templateSeed,
+        army_id: 0,
+        weapons: templateSeed.weapons.map((w) => ({ ...w, unit_id: 0 })),
+      }
+    : undefined;
+
+  const showingAddForm = addMode === "form-blank" || addMode === "form-template";
 
   return (
     <div className="flex-1 flex flex-col gap-4 min-w-0">
@@ -100,7 +135,6 @@ export default function ArmyDetail({
               </button>
             </div>
           </div>
-          {/* Points bar */}
           <div className="flex flex-col gap-1">
             <div className="flex justify-between text-xs text-gray-400">
               <span>{totalPoints} / {army.points_limit} pts</span>
@@ -124,15 +158,23 @@ export default function ArmyDetail({
           <span className="text-sm font-semibold text-gray-300">
             Units ({army.units.length})
           </span>
-          {!addingUnit && !editingUnit && (
-            <button onClick={() => setAddingUnit(true)} className="btn-primary text-xs">
-              + Add Unit
-            </button>
-          )}
         </div>
 
-        {addingUnit && (
-          <UnitForm onSave={handleSaveUnit} onCancel={() => setAddingUnit(false)} />
+        {/* Add unit section — always visible unless editing an existing unit */}
+        {!editingUnit && (
+          showingAddForm ? (
+            <UnitForm
+              initial={seedAsUnit}
+              onSave={handleSaveNewUnit}
+              onCancel={cancelAdd}
+            />
+          ) : (
+            <UnitLibraryPicker
+              templates={unitTemplates}
+              onSelect={handleSelectTemplate}
+              onCustom={handleCustom}
+            />
+          )
         )}
 
         {army.units.map((unit) =>
@@ -140,22 +182,22 @@ export default function ArmyDetail({
             <UnitForm
               key={unit.id}
               initial={unit}
-              onSave={handleSaveUnit}
+              onSave={handleSaveEditUnit}
               onCancel={() => setEditingUnit(null)}
             />
           ) : (
             <UnitCard
               key={unit.id}
               unit={unit}
-              onEdit={setEditingUnit}
+              onEdit={(u) => { setAddMode("picker"); setEditingUnit(u); }}
               onDelete={onDeleteUnit}
             />
           )
         )}
 
-        {army.units.length === 0 && !addingUnit && (
-          <p className="text-gray-500 text-sm text-center py-8">
-            No units yet. Click &quot;+ Add Unit&quot; to get started.
+        {army.units.length === 0 && !showingAddForm && (
+          <p className="text-gray-500 text-sm text-center py-4">
+            No units yet. Pick from the library or add a custom unit above.
           </p>
         )}
       </div>
