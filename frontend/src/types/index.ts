@@ -24,6 +24,8 @@ export interface WeaponCreate {
   special: string;
 }
 
+export type UnitStatus = "unpainted" | "painted" | "ready";
+
 export interface Unit {
   id: number;
   army_id: number;
@@ -35,6 +37,7 @@ export interface Unit {
   wounds: number;
   leadership: number;
   oc: number;
+  status: UnitStatus;
   weapons: Weapon[];
 }
 
@@ -47,6 +50,7 @@ export interface UnitCreate {
   wounds: number;
   leadership: number;
   oc: number;
+  status: UnitStatus;
   weapons: WeaponCreate[];
 }
 
