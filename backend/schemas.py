@@ -42,6 +42,7 @@ class UnitBase(BaseModel):
     wounds: int = 1
     leadership: int = 7
     oc: int = 1
+    status: str = "unpainted"
 
 
 class UnitCreate(UnitBase):
@@ -58,6 +59,10 @@ class UnitOut(UnitBase):
     weapons: list[WeaponOut] = []
 
     model_config = {"from_attributes": True}
+
+
+class UnitStatusUpdate(BaseModel):
+    status: str
 
 
 # --- Army ---
@@ -91,26 +96,6 @@ class ArmyImport(BaseModel):
     faction: str
     points_limit: int = 2000
     units: list[UnitCreate] = []
-
-
-# --- Unit Templates ---
-
-class WeaponTemplateOut(WeaponBase):
-    id: int
-    unit_template_id: int
-
-    model_config = {"from_attributes": True}
-
-
-class UnitTemplateCreate(UnitBase):
-    weapons: list[WeaponCreate] = []
-
-
-class UnitTemplateOut(UnitBase):
-    id: int
-    weapons: list[WeaponTemplateOut] = []
-
-    model_config = {"from_attributes": True}
 
 
 # --- Unit Templates ---
