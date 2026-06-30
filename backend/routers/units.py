@@ -64,6 +64,17 @@ def update_unit(unit_id: int, payload: schemas.UnitUpdate, db: Session = Depends
     return unit
 
 
+@router.patch("/{unit_id}/status", response_model=schemas.UnitOut)
+def update_unit_status(unit_id: int, payload: schemas.UnitStatusUpdate, db: Session = Depends(get_db)):
+    unit = db.query(models.Unit).filter(models.Unit.id == unit_id).first()
+    if not unit:
+        raise HTTPException(status_code=404, detail="Unit not found")
+    unit.status = payload.status
+    db.commit()
+    db.refresh(unit)
+    return unit
+
+
 @router.delete("/{unit_id}", status_code=204)
 def delete_unit(unit_id: int, db: Session = Depends(get_db)):
     unit = db.query(models.Unit).filter(models.Unit.id == unit_id).first()
