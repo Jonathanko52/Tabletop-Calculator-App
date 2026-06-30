@@ -29,6 +29,7 @@ class Unit(Base):
     wounds = Column(Integer, default=1)
     leadership = Column(Integer, default=7)
     oc = Column(Integer, default=1)
+    status = Column(String, default="unpainted")  # 'unpainted' | 'painted' | 'ready'
 
     army = relationship("Army", back_populates="units")
     weapons = relationship("Weapon", back_populates="unit", cascade="all, delete-orphan")
