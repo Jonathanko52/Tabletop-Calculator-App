@@ -1,0 +1,1539 @@
+[
+  {
+    "name": "Aleya",
+    "points_cost": 75,
+    "movement": 6,
+    "toughness": 3,
+    "save": 3,
+    "wounds": 4,
+    "leadership": 6,
+    "oc": 1,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Somnus",
+        "range": 0,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -3,
+        "damage": "3",
+        "special": "Anti-Psyker 5+, Devastating Wounds"
+      }
+    ]
+  },
+  {
+    "name": "Allarus Custodians",
+    "points_cost": 130,
+    "movement": 5,
+    "toughness": 7,
+    "save": 2,
+    "wounds": 4,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Guardian Spear",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Guardian Spear",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Castellan axe",
+        "range": 0,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -1,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Castellan axe",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Misericordia",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Anathema Psykana Rhino",
+    "points_cost": 75,
+    "movement": 12,
+    "toughness": 9,
+    "save": 3,
+    "wounds": 10,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Hunter-killer missile",
+        "range": 48,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 14,
+        "ap": -3,
+        "damage": "D6",
+        "special": "One Shot"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Storm Bolter",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Rapid Fire 2"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured tracks",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 4,
+        "strength": 6,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Blade Champion",
+    "points_cost": 110,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 6,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "\u27a4 Vaultswords - Behemor",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "Precision"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "\u27a4 Vaultswords - Hurricanis",
+        "range": 0,
+        "attacks": "9",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -1,
+        "damage": "1",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "\u27a4 Vaultswords - Victus",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -3,
+        "damage": "3",
+        "special": "Devastating Wounds"
+      }
+    ]
+  },
+  {
+    "name": "Custodian Guard",
+    "points_cost": 180,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 3,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Guardian Spear",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Guardian Spear",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Sentinel Blade",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -2,
+        "damage": "1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Sentinel Blade",
+        "range": 12,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault, Pistol"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Misericordia",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Custodian Wardens",
+    "points_cost": 200,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 3,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Guardian Spear",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Guardian Spear",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Castellan axe",
+        "range": 0,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -1,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Castellan axe",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      }
+    ]
+  },
+  {
+    "name": "Knight-Centura",
+    "points_cost": 70,
+    "movement": 6,
+    "toughness": 3,
+    "save": 3,
+    "wounds": 4,
+    "leadership": 6,
+    "oc": 1,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Executioner Greatblade",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "2",
+        "special": "Anti-Psyker 5+, Devastating Wounds"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Witchseeker Flamer",
+        "range": 12,
+        "attacks": "D6",
+        "bs_ws": 0,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Ignores Cover, Torrent"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Close combat weapon",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 3,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Master-crafted boltgun",
+        "range": 24,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": 0,
+        "damage": "2",
+        "special": "Rapid Fire 1"
+      }
+    ]
+  },
+  {
+    "name": "Prosecutors",
+    "points_cost": 40,
+    "movement": 6,
+    "toughness": 3,
+    "save": 3,
+    "wounds": 1,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Boltgun",
+        "range": 24,
+        "attacks": "1",
+        "bs_ws": 3,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Rapid Fire 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Close combat weapon",
+        "range": 0,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 3,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Shield-Captain",
+    "points_cost": 140,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 6,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Guardian Spear",
+        "range": 0,
+        "attacks": "7",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Guardian Spear",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Castellan axe",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -1,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Castellan axe",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Sentinel Blade",
+        "range": 0,
+        "attacks": "7",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -2,
+        "damage": "1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Sentinel Blade",
+        "range": 12,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault, Pistol"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Pyrithite Spear",
+        "range": 0,
+        "attacks": "7",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Pyrithite Spear",
+        "range": 12,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -4,
+        "damage": "D6",
+        "special": "Melta 2"
+      }
+    ]
+  },
+  {
+    "name": "Shield-Captain in Allarus Terminator Armour",
+    "points_cost": 140,
+    "movement": 5,
+    "toughness": 7,
+    "save": 2,
+    "wounds": 7,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Guardian Spear",
+        "range": 0,
+        "attacks": "7",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Guardian Spear",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Castellan axe",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -1,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Castellan axe",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Balistus grenade launcher",
+        "range": 18,
+        "attacks": "D6",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "1",
+        "special": "Blast"
+      }
+    ]
+  },
+  {
+    "name": "Shield-Captain on Dawneagle Jetbike",
+    "points_cost": 160,
+    "movement": 12,
+    "toughness": 7,
+    "save": 2,
+    "wounds": 8,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Vertus hurricane bolter",
+        "range": 18,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Rapid Fire 3, Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Salvo launcher",
+        "range": 24,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 10,
+        "ap": -3,
+        "damage": "D6+1",
+        "special": "Twin-linked"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Interceptor lance",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "Lance"
+      }
+    ]
+  },
+  {
+    "name": "Trajann Valoris",
+    "points_cost": 140,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 7,
+    "leadership": 5,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Watcher's Axe",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 2,
+        "strength": 10,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Eagle's Scream",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "3",
+        "special": "Assault"
+      }
+    ]
+  },
+  {
+    "name": "Valerian",
+    "points_cost": 110,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 6,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Gnosis",
+        "range": 24,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Gnosis",
+        "range": 0,
+        "attacks": "7",
+        "bs_ws": 2,
+        "strength": 8,
+        "ap": -3,
+        "damage": "2",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Venerable Contemptor Dreadnought",
+    "points_cost": 160,
+    "movement": 6,
+    "toughness": 9,
+    "save": 2,
+    "wounds": 10,
+    "leadership": 6,
+    "oc": 3,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Multi-melta",
+        "range": 18,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -4,
+        "damage": "D6",
+        "special": "Melta 2"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Kheres-pattern assault cannon",
+        "range": 24,
+        "attacks": "6",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -1,
+        "damage": "1",
+        "special": "Devastating Wounds"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Combi-bolter",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Rapid Fire 2"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Contemptor combat weapon",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Venerable Land Raider",
+    "points_cost": 240,
+    "movement": 10,
+    "toughness": 12,
+    "save": 2,
+    "wounds": 16,
+    "leadership": 6,
+    "oc": 5,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Hunter-killer missile",
+        "range": 48,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 14,
+        "ap": -3,
+        "damage": "D6",
+        "special": "One Shot"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Storm bolter",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Rapid fire 2"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin heavy bolter",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -1,
+        "damage": "2",
+        "special": "Sustained Hits 1, Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Godhammer lascannon",
+        "range": 48,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -3,
+        "damage": "D6+1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured tracks",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 4,
+        "strength": 8,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Vertus Praetors",
+    "points_cost": 150,
+    "movement": 12,
+    "toughness": 7,
+    "save": 2,
+    "wounds": 5,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Interceptor lance",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "Lance"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Salvo launcher",
+        "range": 24,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 10,
+        "ap": -3,
+        "damage": "D6+1",
+        "special": "Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Vertus hurricane bolter",
+        "range": 18,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Rapid Fire 3, Twin-linked"
+      }
+    ]
+  },
+  {
+    "name": "Vigilators",
+    "points_cost": 50,
+    "movement": 6,
+    "toughness": 3,
+    "save": 3,
+    "wounds": 1,
+    "leadership": 6,
+    "oc": 1,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Executioner greatblade",
+        "range": 0,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 5,
+        "ap": -2,
+        "damage": "2",
+        "special": "Anti-Psyker 5+, Devastating Wounds"
+      }
+    ]
+  },
+  {
+    "name": "Witchseekers",
+    "points_cost": 50,
+    "movement": 6,
+    "toughness": 3,
+    "save": 3,
+    "wounds": 1,
+    "leadership": 6,
+    "oc": 1,
+    "weapons": [
+      {
+        "weapon_type": "melee",
+        "name": "Close combat weapon",
+        "range": 0,
+        "attacks": "2",
+        "bs_ws": 3,
+        "strength": 3,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Witchseeker flamer",
+        "range": 12,
+        "attacks": "D6",
+        "bs_ws": 0,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Ignores Cover, Torrent"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Witchseeker Flamer",
+        "range": 12,
+        "attacks": "D6",
+        "bs_ws": 0,
+        "strength": 4,
+        "ap": 0,
+        "damage": "1",
+        "special": "Ignores Cover, Torrent"
+      }
+    ]
+  },
+  {
+    "name": "Custodian Guard with Adrasite and Pyrithite spears",
+    "points_cost": 250,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 3,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Adrasite spear",
+        "range": 18,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Adrasite spear",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Pyrithite spear",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Pyrithite spear",
+        "range": 12,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -4,
+        "damage": "D6",
+        "special": "Melta 2"
+      }
+    ]
+  },
+  {
+    "name": "Sagittarum Custodians",
+    "points_cost": 225,
+    "movement": 6,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 3,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Adrastus bolt caliver",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -1,
+        "damage": "2",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Misericordia",
+        "range": 0,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Aquilon Custodians",
+    "points_cost": 195,
+    "movement": 5,
+    "toughness": 7,
+    "save": 2,
+    "wounds": 4,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": []
+  },
+  {
+    "name": "Agamatus Custodians",
+    "points_cost": 225,
+    "movement": 12,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 4,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Lastrum bolt cannon",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Interceptor Lance",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "Lance"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Adrathic devastator",
+        "range": 18,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin las-pulsar",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -1,
+        "damage": "2",
+        "special": "Twin-linked"
+      }
+    ]
+  },
+  {
+    "name": "Venatari Custodians",
+    "points_cost": 165,
+    "movement": 10,
+    "toughness": 6,
+    "save": 2,
+    "wounds": 3,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Venatari lance",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 4,
+        "ap": -1,
+        "damage": "2",
+        "special": "Assault"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Venatari lance",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -2,
+        "damage": "2",
+        "special": "Lance"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Kinetic destroyer",
+        "range": 12,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Pistol, Sustained Hits 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Tarsis buckler",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -2,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Contemptor-Galatus Dreadnought",
+    "points_cost": 165,
+    "movement": 6,
+    "toughness": 9,
+    "save": 2,
+    "wounds": 10,
+    "leadership": 6,
+    "oc": 3,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Galatus warblade",
+        "range": 12,
+        "attacks": "D6",
+        "bs_ws": 0,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Ignores Cover, Torrent, Twin-linked"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Galatus warblade",
+        "range": 0,
+        "attacks": "8",
+        "bs_ws": 2,
+        "strength": 8,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Contemptor-Achillus Dreadnought",
+    "points_cost": 155,
+    "movement": 6,
+    "toughness": 9,
+    "save": 2,
+    "wounds": 10,
+    "leadership": 6,
+    "oc": 3,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Infernus incinerator",
+        "range": 12,
+        "attacks": "D6",
+        "bs_ws": 0,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Ignores Cover, Torrent"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Lastrum storm bolter",
+        "range": 24,
+        "attacks": "2",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -1,
+        "damage": "1",
+        "special": "Rapid Fire 2"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin adrathic destructor",
+        "range": 18,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -2,
+        "damage": "3",
+        "special": "Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Achillus dreadspear",
+        "range": 12,
+        "attacks": "1",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Achillus dreadspear",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -2,
+        "damage": "D6+1",
+        "special": "Lance"
+      }
+    ]
+  },
+  {
+    "name": "Pallas Grav-attack",
+    "points_cost": 105,
+    "movement": 12,
+    "toughness": 8,
+    "save": 2,
+    "wounds": 9,
+    "leadership": 6,
+    "oc": 2,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Twin arachnus blaze cannon",
+        "range": 24,
+        "attacks": "8",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -1,
+        "damage": "1",
+        "special": "Devastating Wounds, Twin-linked"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured hull",
+        "range": 0,
+        "attacks": "3",
+        "bs_ws": 4,
+        "strength": 6,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Caladius Grav-tank",
+    "points_cost": 215,
+    "movement": 10,
+    "toughness": 11,
+    "save": 2,
+    "wounds": 14,
+    "leadership": 6,
+    "oc": 4,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Twin iliastus accelerator cannon",
+        "range": 48,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 10,
+        "ap": -1,
+        "damage": "3",
+        "special": "Rapid Fire 4, Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin arachnus heavy blaze cannon",
+        "range": 48,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -3,
+        "damage": "D6+2",
+        "special": "Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin lastrum bolt cannon",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured hull",
+        "range": 0,
+        "attacks": "4",
+        "bs_ws": 4,
+        "strength": 6,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Telemon Heavy Dreadnought",
+    "points_cost": 215,
+    "movement": 8,
+    "toughness": 10,
+    "save": 2,
+    "wounds": 12,
+    "leadership": 6,
+    "oc": 4,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Arachnus storm cannon",
+        "range": 24,
+        "attacks": "12",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Devastating Wounds"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Iliastus accelerator culverin",
+        "range": 48,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 9,
+        "ap": -1,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Telemon Caestus",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -2,
+        "damage": "3",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin plasma projector",
+        "range": 12,
+        "attacks": "D3",
+        "bs_ws": 0,
+        "strength": 7,
+        "ap": -2,
+        "damage": "1",
+        "special": "Torrent, Twin-linked"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Spiculus bolt launcher",
+        "range": 36,
+        "attacks": "D6+3",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": 0,
+        "damage": "1",
+        "special": "Blast"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured feet",
+        "range": 0,
+        "attacks": "5",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Coronus Grav-carrier",
+    "points_cost": 200,
+    "movement": 12,
+    "toughness": 12,
+    "save": 2,
+    "wounds": 16,
+    "leadership": 6,
+    "oc": 5,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Twin lastrum bolt cannon",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin arachnus blaze cannon",
+        "range": 24,
+        "attacks": "8",
+        "bs_ws": 2,
+        "strength": 5,
+        "ap": -1,
+        "damage": "1",
+        "special": "Devastating Wounds, Twin-linked"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured hull",
+        "range": 0,
+        "attacks": "6",
+        "bs_ws": 4,
+        "strength": 8,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Orion Assault Dropship",
+    "points_cost": 690,
+    "movement": 20,
+    "toughness": 12,
+    "save": 2,
+    "wounds": 22,
+    "leadership": 6,
+    "oc": 0,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Arachnus heavy blaze cannon",
+        "range": 36,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -3,
+        "damage": "D6+1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Twin lastrum bolt cannon",
+        "range": 36,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 6,
+        "ap": -1,
+        "damage": "1",
+        "special": "Sustained Hits 1"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Spiculus heavy bolt launcher",
+        "range": 36,
+        "attacks": "D6+6",
+        "bs_ws": 2,
+        "strength": 7,
+        "ap": -1,
+        "damage": "2",
+        "special": "Blast"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured hull",
+        "range": 0,
+        "attacks": "9",
+        "bs_ws": 4,
+        "strength": 9,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  },
+  {
+    "name": "Ares Gunship",
+    "points_cost": 580,
+    "movement": 20,
+    "toughness": 12,
+    "save": 2,
+    "wounds": 22,
+    "leadership": 6,
+    "oc": 0,
+    "weapons": [
+      {
+        "weapon_type": "ranged",
+        "name": "Arachnus heavy blaze cannon",
+        "range": 36,
+        "attacks": "4",
+        "bs_ws": 2,
+        "strength": 12,
+        "ap": -3,
+        "damage": "D6+1",
+        "special": "-"
+      },
+      {
+        "weapon_type": "ranged",
+        "name": "Arachnus magna-blaze cannon",
+        "range": 48,
+        "attacks": "3",
+        "bs_ws": 2,
+        "strength": 18,
+        "ap": -4,
+        "damage": "D6+6",
+        "special": "-"
+      },
+      {
+        "weapon_type": "melee",
+        "name": "Armoured hull",
+        "range": 0,
+        "attacks": "9",
+        "bs_ws": 4,
+        "strength": 9,
+        "ap": 0,
+        "damage": "1",
+        "special": "-"
+      }
+    ]
+  }
+]

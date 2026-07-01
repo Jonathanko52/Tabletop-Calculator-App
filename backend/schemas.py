@@ -107,11 +107,22 @@ class WeaponTemplateOut(WeaponBase):
     model_config = {"from_attributes": True}
 
 
-class UnitTemplateCreate(UnitBase):
+class UnitTemplateBase(BaseModel):
+    name: str
+    points_cost: int = 0
+    movement: int = 6
+    toughness: int = 4
+    save: int = 4
+    wounds: int = 1
+    leadership: int = 7
+    oc: int = 1
+
+
+class UnitTemplateCreate(UnitTemplateBase):
     weapons: list[WeaponCreate] = []
 
 
-class UnitTemplateOut(UnitBase):
+class UnitTemplateOut(UnitTemplateBase):
     id: int
     weapons: list[WeaponTemplateOut] = []
 
