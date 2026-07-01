@@ -159,13 +159,15 @@ def main() -> None:
         print("No units extracted — check the file is a catalogue (.cat), not a roster (.ros/.rosz).", file=sys.stderr)
         sys.exit(1)
 
-    output = json.dumps(units, indent=2)
-
     if args.out:
-        Path(args.out).write_text(output)
-        print(f"Wrote {len(units)} units to {args.out}")
+        out_path = Path(args.out)
     else:
-        print(output)
+        factions_dir = Path(__file__).parent / "factions"
+        factions_dir.mkdir(exist_ok=True)
+        out_path = factions_dir / (Path(args.input).stem + ".json")
+
+    out_path.write_text(json.dumps(units, indent=2))
+    print(f"Wrote {len(units)} units → {out_path}", file=sys.stderr)
 
 
 if __name__ == "__main__":

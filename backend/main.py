@@ -1,8 +1,12 @@
+import json
+from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from database import engine, get_db
+from database import engine, SessionLocal, get_db
 import models
 import schemas
 from routers import armies, units, unit_templates
@@ -10,7 +14,38 @@ from effectiveness.calculator import calculate_weapon_damage
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Tabletop War Game Manager", version="1.0.0")
+FACTIONS_DIR = Path(__file__).parent.parent / "factions"
+
+
+def seed_templates(db: Session) -> None:
+    if not FACTIONS_DIR.exists():
+        return
+    existing = {t.name for t in db.query(models.UnitTemplate).all()}
+    for json_file in sorted(FACTIONS_DIR.glob("*.json")):
+        for unit_data in json.loads(json_file.read_text()):
+            if unit_data.get("name") in existing:
+                continue
+            weapons = unit_data.pop("weapons", [])
+            tmpl = models.UnitTemplate(**unit_data)
+            db.add(tmpl)
+            db.flush()
+            for w in weapons:
+                db.add(models.WeaponTemplate(unit_template_id=tmpl.id, **w))
+            existing.add(unit_data["name"])
+    db.commit()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    db = SessionLocal()
+    try:
+        seed_templates(db)
+    finally:
+        db.close()
+    yield
+
+
+app = FastAPI(title="Tabletop War Game Manager", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
