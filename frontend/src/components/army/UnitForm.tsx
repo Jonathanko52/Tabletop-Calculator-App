@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Unit, UnitCreate, WeaponCreate } from "@/types";
+import type { Unit, UnitCreate, UnitStatus, WeaponCreate } from "@/types";
 import WeaponForm from "./WeaponForm";
 
 const BLANK_WEAPON: WeaponCreate = {
@@ -25,6 +25,7 @@ const BLANK_UNIT: UnitCreate = {
   wounds: 1,
   leadership: 7,
   oc: 1,
+  status: "unpainted",
   weapons: [],
 };
 
@@ -46,6 +47,7 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
           wounds: initial.wounds,
           leadership: initial.leadership,
           oc: initial.oc,
+          status: initial.status,
           weapons: initial.weapons.map((w) => ({
             weapon_type: w.weapon_type as "ranged" | "melee",
             name: w.name,
@@ -82,7 +84,7 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
     setForm((f) => ({ ...f, weapons: f.weapons.filter((_, i) => i !== index) }));
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     setSaving(true);
     await onSave(form);
@@ -121,6 +123,18 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
             onChange={(e) => setField("points_cost", Number(e.target.value))}
             className="input"
           />
+        </label>
+        <label className="flex flex-col gap-0.5 text-xs w-32">
+          <span className="text-gray-400 font-medium">Status</span>
+          <select
+            value={form.status}
+            onChange={(e) => setField("status", e.target.value as UnitStatus)}
+            className="input"
+          >
+            <option value="unpainted">Unpainted</option>
+            <option value="painted">Painted</option>
+            <option value="ready">Ready</option>
+          </select>
         </label>
       </div>
 
