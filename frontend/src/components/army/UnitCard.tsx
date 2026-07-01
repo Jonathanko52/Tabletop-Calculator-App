@@ -19,7 +19,11 @@ const STAT_LABELS = [
 
 export default function UnitCard({ unit, onEdit, onDelete }: Props) {
   return (
-    <div className="bg-gray-800 rounded-xl p-4 flex flex-col gap-3">
+    <div
+      draggable
+      onDragStart={(e) => e.dataTransfer.setData("text/plain", String(unit.id))}
+      className="bg-gray-800 rounded-xl p-4 flex flex-col gap-3 cursor-grab active:cursor-grabbing"
+    >
       <div className="flex items-start justify-between gap-2">
         <div>
           <h3 className="font-semibold text-white">{unit.name}</h3>
