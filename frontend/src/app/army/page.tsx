@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import type { Army, ArmyCreate, ArmyImport, UnitCreate, UnitTemplate, UnitTemplateCreate } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate } from "@/types";
 import * as api from "@/lib/api";
 import ArmySidebar from "@/components/army/ArmySidebar";
 import ArmyDetail from "@/components/army/ArmyDetail";
@@ -68,6 +68,11 @@ export default function ArmyPage() {
     await loadArmies();
   }
 
+  async function handleUpdateUnitStatus(unitId: number, status: UnitStatus) {
+    await api.updateUnitStatus(unitId, status);
+    await loadArmies();
+  }
+
   async function handleDeleteUnit(unitId: number) {
     if (!confirm("Remove this unit?")) return;
     await api.deleteUnit(unitId);
@@ -121,6 +126,7 @@ export default function ArmyPage() {
           unitTemplates={unitTemplates}
           onAddUnit={handleAddUnit}
           onUpdateUnit={handleUpdateUnit}
+          onUpdateUnitStatus={handleUpdateUnitStatus}
           onDeleteUnit={handleDeleteUnit}
           onUpdateArmy={handleUpdateArmy}
           onDeleteArmy={() => handleDeleteArmy(selectedArmy.id)}
