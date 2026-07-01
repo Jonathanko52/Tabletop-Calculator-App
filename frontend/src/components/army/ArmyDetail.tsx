@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Army, Unit, UnitCreate, UnitTemplate, ArmyCreate } from "@/types";
+import type { Army, Unit, UnitCreate, UnitStatus, UnitTemplate, ArmyCreate } from "@/types";
 import UnitCard from "./UnitCard";
 import UnitForm from "./UnitForm";
 import UnitLibraryPicker from "./UnitLibraryPicker";
@@ -11,10 +11,17 @@ interface Props {
   unitTemplates: UnitTemplate[];
   onAddUnit: (data: UnitCreate) => Promise<void>;
   onUpdateUnit: (unitId: number, data: UnitCreate) => Promise<void>;
+  onUpdateUnitStatus: (unitId: number, status: UnitStatus) => Promise<void>;
   onDeleteUnit: (unitId: number) => Promise<void>;
   onUpdateArmy: (data: ArmyCreate) => Promise<void>;
   onDeleteArmy: () => Promise<void>;
 }
+
+const COLUMNS: { status: UnitStatus; label: string; accent: string }[] = [
+  { status: "unpainted", label: "Unpainted", accent: "border-gray-600" },
+  { status: "painted",   label: "Painted",   accent: "border-amber-500" },
+  { status: "ready",     label: "Ready",     accent: "border-green-500" },
+];
 
 type AddMode = "none" | "picker" | "form-blank" | "form-template";
 
@@ -23,6 +30,7 @@ export default function ArmyDetail({
   unitTemplates,
   onAddUnit,
   onUpdateUnit,
+  onUpdateUnitStatus,
   onDeleteUnit,
   onUpdateArmy,
   onDeleteArmy,
@@ -68,6 +76,13 @@ export default function ArmyDetail({
     setEditingUnit(null);
   }
 
+  function handleDrop(e: React.DragEvent, newStatus: UnitStatus) {
+    e.preventDefault();
+    const unitId = Number(e.dataTransfer.getData("text/plain"));
+    if (!unitId) return;
+    onUpdateUnitStatus(unitId, newStatus);
+  }
+
   async function handleSaveArmy(e: React.SyntheticEvent) {
     e.preventDefault();
     await onUpdateArmy(armyForm);
@@ -80,6 +95,7 @@ export default function ArmyDetail({
     ? {
         ...templateSeed,
         army_id: 0,
+        status: "unpainted" as UnitStatus,
         weapons: templateSeed.weapons.map((w) => ({ ...w, unit_id: 0 })),
       }
     : undefined;
@@ -152,15 +168,11 @@ export default function ArmyDetail({
         </div>
       )}
 
-      {/* Unit list */}
+      {/* Add unit section */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-gray-300">
-            Units ({army.units.length})
-          </span>
-        </div>
-
-        {/* Add unit section — always visible unless editing an existing unit */}
+        <span className="text-sm font-semibold text-gray-300">
+          Units ({army.units.length})
+        </span>
         {!editingUnit && (
           showingAddForm ? (
             <UnitForm
@@ -176,30 +188,49 @@ export default function ArmyDetail({
             />
           )
         )}
+      </div>
 
-        {army.units.map((unit) =>
-          editingUnit?.id === unit.id ? (
-            <UnitForm
-              key={unit.id}
-              initial={unit}
-              onSave={handleSaveEditUnit}
-              onCancel={() => setEditingUnit(null)}
-            />
-          ) : (
-            <UnitCard
-              key={unit.id}
-              unit={unit}
-              onEdit={(u) => { setAddMode("picker"); setEditingUnit(u); }}
-              onDelete={onDeleteUnit}
-            />
-          )
-        )}
+      {/* Kanban board */}
+      <div className="grid grid-cols-3 gap-4">
+        {COLUMNS.map(({ status, label, accent }) => {
+          const colUnits = army.units.filter((u) => u.status === status);
+          const colPoints = colUnits.reduce((s, u) => s + u.points_cost, 0);
+          return (
+            <div
+              key={status}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => handleDrop(e, status)}
+              className={`flex flex-col gap-3 rounded-xl border-2 ${accent} bg-gray-900/50 p-3 min-h-48`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-200">{label}</span>
+                <span className="text-xs text-gray-400">{colPoints} pts</span>
+              </div>
 
-        {army.units.length === 0 && !showingAddForm && (
-          <p className="text-gray-500 text-sm text-center py-4">
-            No units yet. Pick from the library or add a custom unit above.
-          </p>
-        )}
+              {colUnits.map((unit) =>
+                editingUnit?.id === unit.id ? (
+                  <UnitForm
+                    key={unit.id}
+                    initial={unit}
+                    onSave={handleSaveEditUnit}
+                    onCancel={() => setEditingUnit(null)}
+                  />
+                ) : (
+                  <UnitCard
+                    key={unit.id}
+                    unit={unit}
+                    onEdit={(u) => { setAddMode("picker"); setEditingUnit(u); }}
+                    onDelete={onDeleteUnit}
+                  />
+                )
+              )}
+
+              {colUnits.length === 0 && (
+                <p className="text-gray-600 text-xs text-center py-6">Drop units here</p>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
