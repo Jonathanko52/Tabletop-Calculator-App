@@ -142,6 +142,8 @@ export default function ArmyDetail({
               <p className="text-sm text-gray-400">{army.faction}</p>
             </div>
             <div className="flex gap-2">
+              <button disabled className="btn-secondary text-xs opacity-40 cursor-not-allowed">Save</button>
+              <button disabled className="btn-secondary text-xs opacity-40 cursor-not-allowed">Load</button>
               <button onClick={() => setEditingArmy(true)} className="btn-secondary text-xs">Edit</button>
               <button
                 onClick={onDeleteArmy}
