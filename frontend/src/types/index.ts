@@ -94,6 +94,7 @@ export interface UnitTemplate {
   id: number;
   name: string;
   source: string;
+  keywords: string;
   points_cost: number;
   movement: number;
   toughness: number;
