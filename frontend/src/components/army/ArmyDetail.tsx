@@ -45,9 +45,10 @@ export default function ArmyDetail({
     points_limit: army.points_limit,
   });
 
-  const totalPoints = army.units.reduce((s, u) => s + u.points_cost, 0);
-  const pctUsed = Math.min(100, (totalPoints / army.points_limit) * 100);
-  const overLimit = totalPoints > army.points_limit;
+  const readyPoints = army.units.filter((u) => u.status === "ready").reduce((s, u) => s + u.points_cost, 0);
+  const otherPoints = army.units.filter((u) => u.status !== "ready").reduce((s, u) => s + u.points_cost, 0);
+  const readyPct = Math.min(100, (readyPoints / (army.points_limit || 1)) * 100);
+  const overLimit = readyPoints > army.points_limit;
 
   function handleSelectTemplate(template: UnitTemplate) {
     setTemplateSeed(template);
@@ -153,18 +154,33 @@ export default function ArmyDetail({
               </button>
             </div>
           </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between text-xs text-gray-400">
-              <span>{totalPoints} / {army.points_limit} pts</span>
-              <span className={overLimit ? "text-red-400 font-semibold" : "text-green-400"}>
-                {overLimit ? `${totalPoints - army.points_limit} over limit` : `${army.points_limit - totalPoints} remaining`}
-              </span>
+          <div className="flex flex-col gap-2">
+            {/* Ready bar — hard limit */}
+            <div className="flex flex-col gap-1">
+              <div className="flex justify-between text-xs">
+                <span className="text-green-400 font-medium">Ready: {readyPoints} / {army.points_limit} pts</span>
+                <span className={overLimit ? "text-red-400 font-semibold" : "text-gray-500"}>
+                  {overLimit ? `${readyPoints - army.points_limit} over` : `${army.points_limit - readyPoints} remaining`}
+                </span>
+              </div>
+              <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all ${overLimit ? "bg-red-500" : "bg-green-500"}`}
+                  style={{ width: `${readyPct}%` }}
+                />
+              </div>
             </div>
-            <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all ${overLimit ? "bg-red-500" : "bg-indigo-500"}`}
-                style={{ width: `${pctUsed}%` }}
-              />
+            {/* Other bar — soft, informational */}
+            <div className="flex flex-col gap-1">
+              <div className="flex justify-between text-xs">
+                <span className="text-amber-400 font-medium">In progress: {otherPoints} pts</span>
+              </div>
+              <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all bg-amber-500/60"
+                  style={{ width: `${Math.min(100, (otherPoints / (army.points_limit || 1)) * 100)}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>
