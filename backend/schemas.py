@@ -109,6 +109,8 @@ class WeaponTemplateOut(WeaponBase):
 
 class UnitTemplateBase(BaseModel):
     name: str
+    source: str = ""
+    keywords: str = ""
     points_cost: int = 0
     movement: int = 6
     toughness: int = 4

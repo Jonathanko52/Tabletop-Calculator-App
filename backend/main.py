@@ -22,11 +22,12 @@ def seed_templates(db: Session) -> None:
         return
     existing = {t.name for t in db.query(models.UnitTemplate).all()}
     for json_file in sorted(FACTIONS_DIR.glob("*.json")):
+        source = json_file.stem
         for unit_data in json.loads(json_file.read_text()):
             if unit_data.get("name") in existing:
                 continue
             weapons = unit_data.pop("weapons", [])
-            tmpl = models.UnitTemplate(**unit_data)
+            tmpl = models.UnitTemplate(source=source, **unit_data)
             db.add(tmpl)
             db.flush()
             for w in weapons:

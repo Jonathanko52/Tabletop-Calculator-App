@@ -58,6 +58,8 @@ class UnitTemplate(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
+    source = Column(String, default="")
+    keywords = Column(String, default="")
     points_cost = Column(Integer, nullable=False, default=0)
     movement = Column(Integer, default=6)
     toughness = Column(Integer, default=4)

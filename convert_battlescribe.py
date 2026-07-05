@@ -41,6 +41,16 @@ def chars_dict(profile_el: ET.Element) -> dict[str, str]:
     }
 
 
+def collect_keywords(entry_el: ET.Element, unit_name: str) -> str:
+    skip = {unit_name, "Imperium", "Chaos"}
+    keywords: list[str] = []
+    for cl in entry_el.findall(f".//{tag('categoryLink')}"):
+        name = cl.get("name", "")
+        if name and not name.startswith("Faction:") and name not in skip:
+            keywords.append(name)
+    return ", ".join(sorted(set(keywords)))
+
+
 def collect_weapons(entry_el: ET.Element) -> list[dict]:
     seen: set[tuple[str, str]] = set()
     weapons: list[dict] = []
@@ -105,8 +115,9 @@ def parse_unit(entry_el: ET.Element) -> dict | None:
                 except ValueError:
                     pass
 
+    name = entry_el.get("name", "Unknown")
     return {
-        "name": entry_el.get("name", "Unknown"),
+        "name": name,
         "points_cost": pts,
         "movement": parse_int(chars.get("M", "6")),
         "toughness": parse_int(chars.get("T", "4")),
@@ -114,6 +125,7 @@ def parse_unit(entry_el: ET.Element) -> dict | None:
         "wounds": parse_int(chars.get("W", "1")),
         "leadership": parse_int(chars.get("LD", "7")),
         "oc": parse_int(chars.get("OC", "1")),
+        "keywords": collect_keywords(entry_el, name),
         "weapons": collect_weapons(entry_el),
     }
 
