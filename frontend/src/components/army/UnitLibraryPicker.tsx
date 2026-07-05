@@ -9,21 +9,36 @@ interface Props {
   templates: UnitTemplate[];
   onSelect: (template: UnitTemplate) => void;
   onCustom: () => void;
+  // Controlled state lifted to parent so it survives remounts
+  faction: string;
+  onFactionChange: (v: string) => void;
+  minPts: string;
+  onMinPtsChange: (v: string) => void;
+  maxPts: string;
+  onMaxPtsChange: (v: string) => void;
+  filterBattleline: boolean;
+  onFilterBattlelineChange: (v: boolean) => void;
+  filterCharacter: boolean;
+  onFilterCharacterChange: (v: boolean) => void;
+  sort: SortKey;
+  onSortChange: (v: SortKey) => void;
 }
 
-export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Props) {
-  const [selectedFaction, setSelectedFaction] = useState<string>("");
+export default function UnitLibraryPicker({
+  templates, onSelect, onCustom,
+  faction, onFactionChange,
+  minPts, onMinPtsChange,
+  maxPts, onMaxPtsChange,
+  filterBattleline, onFilterBattlelineChange,
+  filterCharacter, onFilterCharacterChange,
+  sort, onSortChange,
+}: Props) {
   const [selectedId, setSelectedId] = useState<number | "">("");
-  const [minPts, setMinPts] = useState<string>("");
-  const [maxPts, setMaxPts] = useState<string>("");
-  const [filterBattleline, setFilterBattleline] = useState(false);
-  const [filterCharacter, setFilterCharacter] = useState(false);
-  const [sort, setSort] = useState<SortKey>("pts-asc");
 
   const factions = [...new Set(templates.map((t) => t.source).filter(Boolean))].sort();
 
   const filtered = templates
-    .filter((t) => t.source === selectedFaction)
+    .filter((t) => t.source === faction)
     .filter((t) => minPts === "" || t.points_cost >= Number(minPts))
     .filter((t) => maxPts === "" || t.points_cost <= Number(maxPts))
     .filter((t) => !filterBattleline || t.keywords.includes("Battleline"))
@@ -34,11 +49,6 @@ export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Pro
       if (sort === "pts-asc")    return a.points_cost - b.points_cost;
       return b.points_cost - a.points_cost;
     });
-
-  function handleFactionChange(faction: string) {
-    setSelectedFaction(faction);
-    setSelectedId("");
-  }
 
   function handleAdd() {
     const template = filtered.find((t) => t.id === selectedId);
@@ -59,8 +69,8 @@ export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Pro
     <div className="flex flex-col gap-2">
       {/* Faction selector */}
       <select
-        value={selectedFaction}
-        onChange={(e) => handleFactionChange(e.target.value)}
+        value={faction}
+        onChange={(e) => { onFactionChange(e.target.value); setSelectedId(""); }}
         className="input"
       >
         <option value="" disabled>— pick faction —</option>
@@ -71,13 +81,13 @@ export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Pro
       </select>
 
       {/* Filters — only shown once a faction is selected */}
-      {selectedFaction && (
+      {faction && (
         <div className="flex flex-wrap gap-2 items-center">
           <input
             type="number"
             placeholder="Min pts"
             value={minPts}
-            onChange={(e) => { setMinPts(e.target.value); setSelectedId(""); }}
+            onChange={(e) => { onMinPtsChange(e.target.value); setSelectedId(""); }}
             className="input w-20 text-xs"
             min={0}
           />
@@ -86,21 +96,21 @@ export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Pro
             type="number"
             placeholder="Max pts"
             value={maxPts}
-            onChange={(e) => { setMaxPts(e.target.value); setSelectedId(""); }}
+            onChange={(e) => { onMaxPtsChange(e.target.value); setSelectedId(""); }}
             className="input w-20 text-xs"
             min={0}
           />
 
           <button
             type="button"
-            onClick={() => { setFilterBattleline((v) => !v); setSelectedId(""); }}
+            onClick={() => { onFilterBattlelineChange(!filterBattleline); setSelectedId(""); }}
             className={chipClass(filterBattleline)}
           >
             Battleline
           </button>
           <button
             type="button"
-            onClick={() => { setFilterCharacter((v) => !v); setSelectedId(""); }}
+            onClick={() => { onFilterCharacterChange(!filterCharacter); setSelectedId(""); }}
             className={chipClass(filterCharacter)}
           >
             Character
@@ -108,7 +118,7 @@ export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Pro
 
           <select
             value={sort}
-            onChange={(e) => { setSort(e.target.value as SortKey); setSelectedId(""); }}
+            onChange={(e) => { onSortChange(e.target.value as SortKey); setSelectedId(""); }}
             className="input text-xs ml-auto"
           >
             <option value="pts-asc">Pts ↑</option>
@@ -124,11 +134,11 @@ export default function UnitLibraryPicker({ templates, onSelect, onCustom }: Pro
         <select
           value={selectedId}
           onChange={(e) => setSelectedId(e.target.value === "" ? "" : Number(e.target.value))}
-          disabled={!selectedFaction}
+          disabled={!faction}
           className="input flex-1"
         >
           <option value="" disabled>
-            {!selectedFaction
+            {!faction
               ? "— pick faction first —"
               : filtered.length === 0
               ? "No units match filters"

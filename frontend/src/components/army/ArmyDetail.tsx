@@ -45,6 +45,14 @@ export default function ArmyDetail({
     points_limit: army.points_limit,
   });
 
+  // Picker state lifted here so it survives picker unmount/remount
+  const [pickerFaction, setPickerFaction] = useState<string>("");
+  const [pickerMinPts, setPickerMinPts] = useState<string>("");
+  const [pickerMaxPts, setPickerMaxPts] = useState<string>("");
+  const [pickerFilterBattleline, setPickerFilterBattleline] = useState(false);
+  const [pickerFilterCharacter, setPickerFilterCharacter] = useState(false);
+  const [pickerSort, setPickerSort] = useState<"alpha-asc" | "alpha-desc" | "pts-asc" | "pts-desc">("pts-asc");
+
   const readyPoints = army.units.filter((u) => u.status === "ready").reduce((s, u) => s + u.points_cost, 0);
   const otherPoints = army.units.filter((u) => u.status !== "ready").reduce((s, u) => s + u.points_cost, 0);
   const readyPct = Math.min(100, (readyPoints / (army.points_limit || 1)) * 100);
@@ -203,6 +211,18 @@ export default function ArmyDetail({
               templates={unitTemplates}
               onSelect={handleSelectTemplate}
               onCustom={handleCustom}
+              faction={pickerFaction}
+              onFactionChange={setPickerFaction}
+              minPts={pickerMinPts}
+              onMinPtsChange={setPickerMinPts}
+              maxPts={pickerMaxPts}
+              onMaxPtsChange={setPickerMaxPts}
+              filterBattleline={pickerFilterBattleline}
+              onFilterBattlelineChange={setPickerFilterBattleline}
+              filterCharacter={pickerFilterCharacter}
+              onFilterCharacterChange={setPickerFilterCharacter}
+              sort={pickerSort}
+              onSortChange={setPickerSort}
             />
           )
         )}
