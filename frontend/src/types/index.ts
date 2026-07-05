@@ -93,6 +93,7 @@ export interface WeaponTemplate {
 export interface UnitTemplate {
   id: number;
   name: string;
+  source: string;
   points_cost: number;
   movement: number;
   toughness: number;
