@@ -200,33 +200,44 @@ export default function ArmyDetail({
           Units ({army.units.length})
         </span>
         {!editingUnit && (
-          showingAddForm ? (
+          <UnitLibraryPicker
+            templates={unitTemplates}
+            onSelect={handleSelectTemplate}
+            onCustom={handleCustom}
+            faction={pickerFaction}
+            onFactionChange={setPickerFaction}
+            minPts={pickerMinPts}
+            onMinPtsChange={setPickerMinPts}
+            maxPts={pickerMaxPts}
+            onMaxPtsChange={setPickerMaxPts}
+            filterBattleline={pickerFilterBattleline}
+            onFilterBattlelineChange={setPickerFilterBattleline}
+            filterCharacter={pickerFilterCharacter}
+            onFilterCharacterChange={setPickerFilterCharacter}
+            sort={pickerSort}
+            onSortChange={setPickerSort}
+          />
+        )}
+      </div>
+
+      {/* Modal: add unit form (template or blank) */}
+      {showingAddForm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={cancelAdd}
+        >
+          <div
+            className="w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <UnitForm
               initial={seedAsUnit}
               onSave={handleSaveNewUnit}
               onCancel={cancelAdd}
             />
-          ) : (
-            <UnitLibraryPicker
-              templates={unitTemplates}
-              onSelect={handleSelectTemplate}
-              onCustom={handleCustom}
-              faction={pickerFaction}
-              onFactionChange={setPickerFaction}
-              minPts={pickerMinPts}
-              onMinPtsChange={setPickerMinPts}
-              maxPts={pickerMaxPts}
-              onMaxPtsChange={setPickerMaxPts}
-              filterBattleline={pickerFilterBattleline}
-              onFilterBattlelineChange={setPickerFilterBattleline}
-              filterCharacter={pickerFilterCharacter}
-              onFilterCharacterChange={setPickerFilterCharacter}
-              sort={pickerSort}
-              onSortChange={setPickerSort}
-            />
-          )
-        )}
-      </div>
+          </div>
+        </div>
+      )}
 
       {/* Kanban board */}
       <div className="grid grid-cols-3 gap-4">
