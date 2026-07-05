@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Army, ArmyCreate, ArmyImport, UnitTemplate, UnitTemplateCreate } from "@/types";
 import ImportPanel from "./ImportPanel";
 import LibraryPanel from "./LibraryPanel";
@@ -27,6 +27,52 @@ export default function ArmySidebar({
   const [mode, setMode] = useState<Mode>("none");
   const [form, setForm] = useState<ArmyCreate>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+
+  // Local ordering — persists within the session; syncs when armies are added/removed
+  const [orderedIds, setOrderedIds] = useState<number[]>(() => armies.map((a) => a.id));
+  const [draggingId, setDraggingId] = useState<number | null>(null);
+  const [dragOverId, setDragOverId] = useState<number | null>(null);
+
+  useEffect(() => {
+    setOrderedIds((prev) => {
+      const existing = new Set(armies.map((a) => a.id));
+      const newIds = armies.map((a) => a.id).filter((id) => !prev.includes(id));
+      return [...prev.filter((id) => existing.has(id)), ...newIds];
+    });
+  }, [armies]);
+
+  const orderedArmies = orderedIds
+    .map((id) => armies.find((a) => a.id === id))
+    .filter(Boolean) as Army[];
+
+  function handleDragStart(e: React.DragEvent, id: number) {
+    setDraggingId(id);
+    e.dataTransfer.effectAllowed = "move";
+  }
+
+  function handleDragOver(e: React.DragEvent, id: number) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (id !== dragOverId) setDragOverId(id);
+  }
+
+  function handleDrop(e: React.DragEvent, targetId: number) {
+    e.preventDefault();
+    if (draggingId === null || draggingId === targetId) return;
+    setOrderedIds((prev) => {
+      const next = prev.filter((id) => id !== draggingId);
+      const idx = next.indexOf(targetId);
+      next.splice(idx, 0, draggingId);
+      return next;
+    });
+    setDraggingId(null);
+    setDragOverId(null);
+  }
+
+  function handleDragEnd() {
+    setDraggingId(null);
+    setDragOverId(null);
+  }
 
   function toggle(next: Mode) {
     setMode((cur) => (cur === next ? "none" : next));
@@ -119,18 +165,32 @@ export default function ArmySidebar({
       )}
 
       <ul className="flex flex-col gap-1">
-        {armies.length === 0 && (
+        {orderedArmies.length === 0 && (
           <li className="text-gray-500 text-sm text-center py-4">No armies yet.</li>
         )}
-        {armies.map((army) => {
+        {orderedArmies.map((army) => {
           const used = army.units.reduce((s, u) => s + u.points_cost, 0);
           const isSelected = army.id === selectedId;
+          const isDragging = army.id === draggingId;
+          const isOver = army.id === dragOverId;
           return (
-            <li key={army.id}>
+            <li
+              key={army.id}
+              draggable
+              onDragStart={(e) => handleDragStart(e, army.id)}
+              onDragOver={(e) => handleDragOver(e, army.id)}
+              onDrop={(e) => handleDrop(e, army.id)}
+              onDragEnd={handleDragEnd}
+              className={[
+                "rounded-lg transition-all",
+                isDragging ? "opacity-40" : "opacity-100",
+                isOver ? "ring-2 ring-indigo-400" : "",
+              ].join(" ")}
+            >
               <button
                 onClick={() => onSelect(army)}
                 className={[
-                  "w-full text-left rounded-lg px-3 py-2 transition-colors",
+                  "w-full text-left rounded-lg px-3 py-2 transition-colors cursor-grab active:cursor-grabbing",
                   isSelected
                     ? "bg-indigo-700 text-white"
                     : "bg-gray-800 hover:bg-gray-700 text-gray-200",
