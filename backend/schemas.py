@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -43,6 +44,9 @@ class UnitBase(BaseModel):
     leadership: int = 7
     oc: int = 1
     status: str = "unpainted"
+    nickname: str = ""
+    notes: str = ""
+    attached_to_unit_id: Optional[int] = None
 
 
 class UnitCreate(UnitBase):
@@ -63,6 +67,12 @@ class UnitOut(UnitBase):
 
 class UnitStatusUpdate(BaseModel):
     status: str
+
+
+class UnitChapterUpdate(BaseModel):
+    nickname: str = ""
+    notes: str = ""
+    attached_to_unit_id: Optional[int] = None
 
 
 # --- Army ---
