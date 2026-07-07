@@ -30,6 +30,9 @@ class Unit(Base):
     leadership = Column(Integer, default=7)
     oc = Column(Integer, default=1)
     status = Column(String, default="unpainted")  # 'unpainted' | 'painted' | 'ready'
+    nickname = Column(String, default="")
+    notes    = Column(String, default="")
+    attached_to_unit_id = Column(Integer, ForeignKey("units.id"), nullable=True)
 
     army = relationship("Army", back_populates="units")
     weapons = relationship("Weapon", back_populates="unit", cascade="all, delete-orphan")
