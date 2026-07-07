@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { href: "/army", label: "Army Management" },
   { href: "/effectiveness", label: "Unit Effectiveness" },
+  { href: "/chapter", label: "Chapter Manager" },
 ];
 
 export default function Navbar() {
