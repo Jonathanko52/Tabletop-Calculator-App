@@ -47,6 +47,11 @@ export const deleteUnit = (unitId: number) =>
 export const updateUnitStatus = (unitId: number, status: UnitStatus) =>
   request<Unit>(`/units/${unitId}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
 
+export const updateUnitChapter = (
+  unitId: number,
+  data: { nickname: string; notes: string; attached_to_unit_id: number | null }
+) => request<Unit>(`/units/${unitId}/chapter`, { method: "PATCH", body: JSON.stringify(data) });
+
 // --- Unit Templates ---
 
 export const getUnitTemplates = () =>
