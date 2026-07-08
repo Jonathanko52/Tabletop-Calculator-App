@@ -75,6 +75,19 @@ def update_unit_status(unit_id: int, payload: schemas.UnitStatusUpdate, db: Sess
     return unit
 
 
+@router.patch("/{unit_id}/chapter", response_model=schemas.UnitOut)
+def update_unit_chapter(unit_id: int, payload: schemas.UnitChapterUpdate, db: Session = Depends(get_db)):
+    unit = db.query(models.Unit).filter(models.Unit.id == unit_id).first()
+    if not unit:
+        raise HTTPException(status_code=404, detail="Unit not found")
+    unit.nickname = payload.nickname
+    unit.notes = payload.notes
+    unit.attached_to_unit_id = payload.attached_to_unit_id
+    db.commit()
+    db.refresh(unit)
+    return unit
+
+
 @router.delete("/{unit_id}", status_code=204)
 def delete_unit(unit_id: int, db: Session = Depends(get_db)):
     unit = db.query(models.Unit).filter(models.Unit.id == unit_id).first()
