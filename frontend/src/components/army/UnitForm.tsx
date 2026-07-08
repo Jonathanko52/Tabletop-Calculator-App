@@ -26,6 +26,9 @@ const BLANK_UNIT: UnitCreate = {
   leadership: 7,
   oc: 1,
   status: "unpainted",
+  nickname: "",
+  notes: "",
+  attached_to_unit_id: null,
   weapons: [],
 };
 
@@ -48,6 +51,9 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
           leadership: initial.leadership,
           oc: initial.oc,
           status: initial.status,
+          nickname: initial.nickname ?? "",
+          notes: initial.notes ?? "",
+          attached_to_unit_id: initial.attached_to_unit_id ?? null,
           weapons: initial.weapons.map((w) => ({
             weapon_type: w.weapon_type as "ranged" | "melee",
             name: w.name,

@@ -105,6 +105,9 @@ export default function ArmyDetail({
         ...templateSeed,
         army_id: 0,
         status: "unpainted" as UnitStatus,
+        nickname: "",
+        notes: "",
+        attached_to_unit_id: null,
         weapons: templateSeed.weapons.map((w) => ({ ...w, unit_id: 0 })),
       }
     : undefined;

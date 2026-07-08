@@ -38,6 +38,9 @@ export interface Unit {
   leadership: number;
   oc: number;
   status: UnitStatus;
+  nickname: string;
+  notes: string;
+  attached_to_unit_id: number | null;
   weapons: Weapon[];
 }
 
@@ -51,6 +54,9 @@ export interface UnitCreate {
   leadership: number;
   oc: number;
   status: UnitStatus;
+  nickname: string;
+  notes: string;
+  attached_to_unit_id: number | null;
   weapons: WeaponCreate[];
 }
 
