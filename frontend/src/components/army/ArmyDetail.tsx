@@ -242,6 +242,36 @@ export default function ArmyDetail({
         </div>
       )}
 
+      {/* Modal: edit existing unit */}
+      {editingUnit && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setEditingUnit(null)}
+        >
+          <div
+            className="w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto flex flex-col gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <UnitForm
+              initial={editingUnit}
+              onSave={handleSaveEditUnit}
+              onCancel={() => setEditingUnit(null)}
+            />
+            <div className="flex justify-end px-1">
+              <button
+                onClick={async () => {
+                  await onDeleteUnit(editingUnit.id);
+                  setEditingUnit(null);
+                }}
+                className="text-sm text-red-400 hover:text-red-300 px-3 py-1.5 rounded hover:bg-gray-800"
+              >
+                Delete Unit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Kanban board */}
       <div className="grid grid-cols-3 gap-4">
         {COLUMNS.map(({ status, label, accent }) => {
@@ -259,23 +289,13 @@ export default function ArmyDetail({
                 <span className="text-xs text-gray-400">{colPoints} pts</span>
               </div>
 
-              {colUnits.map((unit) =>
-                editingUnit?.id === unit.id ? (
-                  <UnitForm
-                    key={unit.id}
-                    initial={unit}
-                    onSave={handleSaveEditUnit}
-                    onCancel={() => setEditingUnit(null)}
-                  />
-                ) : (
-                  <UnitCard
-                    key={unit.id}
-                    unit={unit}
-                    onEdit={(u) => { setAddMode("picker"); setEditingUnit(u); }}
-                    onDelete={onDeleteUnit}
-                  />
-                )
-              )}
+              {colUnits.map((unit) => (
+                <UnitCard
+                  key={unit.id}
+                  unit={unit}
+                  onEdit={(u) => { setAddMode("picker"); setEditingUnit(u); }}
+                />
+              ))}
 
               {colUnits.length === 0 && (
                 <p className="text-gray-600 text-xs text-center py-6">Drop units here</p>

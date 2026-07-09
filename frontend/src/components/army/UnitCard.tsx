@@ -5,7 +5,6 @@ import type { Unit } from "@/types";
 interface Props {
   unit: Unit;
   onEdit: (unit: Unit) => void;
-  onDelete: (id: number) => void;
 }
 
 const STAT_LABELS = [
@@ -17,31 +16,18 @@ const STAT_LABELS = [
   ["OC", "oc"],
 ] as const;
 
-export default function UnitCard({ unit, onEdit, onDelete }: Props) {
+export default function UnitCard({ unit, onEdit }: Props) {
   return (
     <div
       draggable
       onDragStart={(e) => e.dataTransfer.setData("text/plain", String(unit.id))}
-      className="bg-gray-800 rounded-xl p-4 flex flex-col gap-3 cursor-grab active:cursor-grabbing"
+      onClick={() => onEdit(unit)}
+      className="bg-gray-800 rounded-xl p-4 flex flex-col gap-3 cursor-pointer hover:bg-gray-750 hover:ring-1 hover:ring-indigo-500/50 transition-all active:cursor-grabbing"
     >
       <div className="flex items-start justify-between gap-2">
         <div>
           <h3 className="font-semibold text-white">{unit.name}</h3>
           <span className="text-xs text-indigo-400 font-medium">{unit.points_cost} pts</span>
-        </div>
-        <div className="flex gap-2 shrink-0">
-          <button
-            onClick={() => onEdit(unit)}
-            className="text-xs text-gray-400 hover:text-white px-2 py-1 rounded hover:bg-gray-700"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => onDelete(unit.id)}
-            className="text-xs text-red-400 hover:text-red-300 px-2 py-1 rounded hover:bg-gray-700"
-          >
-            Delete
-          </button>
         </div>
       </div>
 
