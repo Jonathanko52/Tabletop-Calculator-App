@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import type { Army, Unit, UnitCreate, UnitStatus, UnitTemplate, ArmyCreate } from "@/types";
+import { useRef, useState } from "react";
+import type { Army, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, ArmyCreate } from "@/types";
 import UnitCard from "./UnitCard";
 import UnitForm from "./UnitForm";
 import UnitLibraryPicker from "./UnitLibraryPicker";
@@ -15,6 +15,7 @@ interface Props {
   onDeleteUnit: (unitId: number) => Promise<void>;
   onUpdateArmy: (data: ArmyCreate) => Promise<void>;
   onDeleteArmy: () => Promise<void>;
+  onImportArmy: (data: ArmyImport) => Promise<void>;
 }
 
 const COLUMNS: { status: UnitStatus; label: string; accent: string }[] = [
@@ -34,7 +35,9 @@ export default function ArmyDetail({
   onDeleteUnit,
   onUpdateArmy,
   onDeleteArmy,
+  onImportArmy,
 }: Props) {
+  const loadFileRef = useRef<HTMLInputElement>(null);
   const [editingUnit, setEditingUnit] = useState<Unit | null>(null);
   const [addMode, setAddMode] = useState<AddMode>("picker");
   const [templateSeed, setTemplateSeed] = useState<UnitTemplate | null>(null);
@@ -98,6 +101,66 @@ export default function ArmyDetail({
     setEditingArmy(false);
   }
 
+  function handleExportArmy() {
+    const payload: ArmyImport = {
+      name: army.name,
+      faction: army.faction,
+      points_limit: army.points_limit,
+      units: army.units.map((u) => ({
+        name: u.name,
+        points_cost: u.points_cost,
+        movement: u.movement,
+        toughness: u.toughness,
+        save: u.save,
+        wounds: u.wounds,
+        leadership: u.leadership,
+        oc: u.oc,
+        status: u.status,
+        nickname: u.nickname,
+        notes: u.notes,
+        attached_to_unit_id: u.attached_to_unit_id,
+        weapons: u.weapons.map((w) => ({
+          weapon_type: w.weapon_type,
+          name: w.name,
+          range: w.range,
+          attacks: w.attacks,
+          bs_ws: w.bs_ws,
+          strength: w.strength,
+          ap: w.ap,
+          damage: w.damage,
+          special: w.special,
+        })),
+      })),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${army.name.replace(/\s+/g, "_")}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleLoadFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      try {
+        const parsed: ArmyImport = JSON.parse(ev.target?.result as string);
+        if (!parsed.name || !parsed.faction) {
+          alert('Invalid army JSON — must have "name" and "faction".');
+          return;
+        }
+        await onImportArmy(parsed);
+      } catch {
+        alert("Failed to parse army file — make sure it is valid JSON.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
   // Convert a UnitTemplate to the shape UnitForm expects for its `initial` prop.
   // UnitForm only reads name/stats/weapons from initial — id and army_id are unused.
   const seedAsUnit: Unit | undefined = templateSeed
@@ -154,8 +217,15 @@ export default function ArmyDetail({
               <p className="text-sm text-gray-400">{army.faction}</p>
             </div>
             <div className="flex gap-2">
-              <button disabled className="btn-secondary text-xs opacity-40 cursor-not-allowed">Save</button>
-              <button disabled className="btn-secondary text-xs opacity-40 cursor-not-allowed">Load</button>
+              <button onClick={handleExportArmy} className="btn-secondary text-xs">Save</button>
+              <button onClick={() => loadFileRef.current?.click()} className="btn-secondary text-xs">Load</button>
+              <input
+                ref={loadFileRef}
+                type="file"
+                accept=".json,application/json"
+                className="hidden"
+                onChange={handleLoadFile}
+              />
               <button onClick={() => setEditingArmy(true)} className="btn-secondary text-xs">Edit</button>
               <button
                 onClick={onDeleteArmy}

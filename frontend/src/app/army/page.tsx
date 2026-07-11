@@ -130,6 +130,7 @@ export default function ArmyPage() {
           onDeleteUnit={handleDeleteUnit}
           onUpdateArmy={handleUpdateArmy}
           onDeleteArmy={() => handleDeleteArmy(selectedArmy.id)}
+          onImportArmy={handleImportArmy}
         />
       ) : (
         <div className="flex-1 flex items-center justify-center h-64 text-gray-500 text-sm">

@@ -19,6 +19,19 @@ interface Props {
 type Mode = "none" | "new" | "import" | "library";
 
 const EMPTY_FORM: ArmyCreate = { name: "", faction: "", points_limit: 2000 };
+const STORAGE_KEY = "tabletop_army_order";
+
+function loadStoredOrder(armies: Army[]): number[] {
+  const existing = new Set(armies.map((a) => a.id));
+  try {
+    const stored: number[] = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
+    const valid = stored.filter((id) => existing.has(id));
+    const newIds = armies.map((a) => a.id).filter((id) => !valid.includes(id));
+    return [...valid, ...newIds];
+  } catch {
+    return armies.map((a) => a.id);
+  }
+}
 
 export default function ArmySidebar({
   armies, selectedId, onSelect, onCreate, onImport,
@@ -28,11 +41,11 @@ export default function ArmySidebar({
   const [form, setForm] = useState<ArmyCreate>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
 
-  // Local ordering — persists within the session; syncs when armies are added/removed
-  const [orderedIds, setOrderedIds] = useState<number[]>(() => armies.map((a) => a.id));
+  const [orderedIds, setOrderedIds] = useState<number[]>(() => loadStoredOrder(armies));
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const [dragOverId, setDragOverId] = useState<number | null>(null);
 
+  // Sync when armies are added or deleted
   useEffect(() => {
     setOrderedIds((prev) => {
       const existing = new Set(armies.map((a) => a.id));
@@ -40,6 +53,13 @@ export default function ArmySidebar({
       return [...prev.filter((id) => existing.has(id)), ...newIds];
     });
   }, [armies]);
+
+  // Persist order to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(orderedIds));
+    } catch {}
+  }, [orderedIds]);
 
   const orderedArmies = orderedIds
     .map((id) => armies.find((a) => a.id === id))
