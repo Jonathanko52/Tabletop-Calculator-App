@@ -26,6 +26,7 @@ const BLANK_UNIT: UnitCreate = {
   leadership: 7,
   oc: 1,
   status: "unpainted",
+  model_count: 1,
   nickname: "",
   notes: "",
   attached_to_unit_id: null,
@@ -51,6 +52,7 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
           leadership: initial.leadership,
           oc: initial.oc,
           status: initial.status,
+          model_count: initial.model_count ?? 1,
           nickname: initial.nickname ?? "",
           notes: initial.notes ?? "",
           attached_to_unit_id: initial.attached_to_unit_id ?? null,
@@ -120,13 +122,23 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
           onChange={(e) => setField("name", e.target.value)}
           className="input flex-1"
         />
-        <label className="flex flex-col gap-0.5 text-xs w-28">
+        <label className="flex flex-col gap-0.5 text-xs w-24">
           <span className="text-gray-400 font-medium">Points</span>
           <input
             type="number"
             min={0}
             value={form.points_cost}
             onChange={(e) => setField("points_cost", Number(e.target.value))}
+            className="input"
+          />
+        </label>
+        <label className="flex flex-col gap-0.5 text-xs w-20">
+          <span className="text-gray-400 font-medium">Models</span>
+          <input
+            type="number"
+            min={1}
+            value={form.model_count}
+            onChange={(e) => setField("model_count", Number(e.target.value))}
             className="input"
           />
         </label>

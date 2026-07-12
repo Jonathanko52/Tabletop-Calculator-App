@@ -38,6 +38,7 @@ export interface Unit {
   leadership: number;
   oc: number;
   status: UnitStatus;
+  model_count: number;
   nickname: string;
   notes: string;
   attached_to_unit_id: number | null;
@@ -54,6 +55,7 @@ export interface UnitCreate {
   leadership: number;
   oc: number;
   status: UnitStatus;
+  model_count: number;
   nickname: string;
   notes: string;
   attached_to_unit_id: number | null;

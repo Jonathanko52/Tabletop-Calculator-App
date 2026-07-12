@@ -44,6 +44,7 @@ class UnitBase(BaseModel):
     leadership: int = 7
     oc: int = 1
     status: str = "unpainted"
+    model_count: int = 1
     nickname: str = ""
     notes: str = ""
     attached_to_unit_id: Optional[int] = None

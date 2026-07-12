@@ -27,7 +27,10 @@ export default function UnitCard({ unit, onEdit }: Props) {
       <div className="flex items-start justify-between gap-2">
         <div>
           <h3 className="font-semibold text-white">{unit.name}</h3>
-          <span className="text-xs text-indigo-400 font-medium">{unit.points_cost} pts</span>
+          <div className="flex gap-2 text-xs mt-0.5">
+            <span className="text-indigo-400 font-medium">{unit.points_cost} pts</span>
+            <span className="text-gray-500">{unit.model_count} {unit.model_count === 1 ? "model" : "models"}</span>
+          </div>
         </div>
       </div>
 

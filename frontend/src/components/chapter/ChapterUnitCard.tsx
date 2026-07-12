@@ -48,6 +48,8 @@ export default function ChapterUnitCard({ unit, allUnits, onUpdate }: Props) {
             </span>
             <span className="text-gray-600">·</span>
             <span className="text-gray-400">{unit.points_cost} pts</span>
+            <span className="text-gray-600">·</span>
+            <span className="text-gray-400">{unit.model_count} {unit.model_count === 1 ? "model" : "models"}</span>
           </div>
         </div>
       </div>
