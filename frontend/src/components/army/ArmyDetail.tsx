@@ -58,8 +58,17 @@ export default function ArmyDetail({
 
   const readyPoints = army.units.filter((u) => u.status === "ready").reduce((s, u) => s + u.points_cost, 0);
   const otherPoints = army.units.filter((u) => u.status !== "ready").reduce((s, u) => s + u.points_cost, 0);
+  const totalPoints = readyPoints + otherPoints;
   const readyPct = Math.min(100, (readyPoints / (army.points_limit || 1)) * 100);
   const overLimit = readyPoints > army.points_limit;
+
+  const warnings: { text: string; level: "error" | "warn" | "info" }[] = [];
+  if (army.units.length === 0)
+    warnings.push({ text: "No units added yet.", level: "info" });
+  if (totalPoints > army.points_limit)
+    warnings.push({ text: `Total list is ${totalPoints - army.points_limit} pts over the limit.`, level: "error" });
+  if (army.units.length > 0 && readyPoints === 0)
+    warnings.push({ text: "No units marked Ready.", level: "warn" });
 
   function handleSelectTemplate(template: UnitTemplate) {
     setTemplateSeed(template);
@@ -266,6 +275,27 @@ export default function ArmyDetail({
               </div>
             </div>
           </div>
+
+          {/* Validation warnings */}
+          {warnings.length > 0 && (
+            <div className="flex flex-col gap-1">
+              {warnings.map((w, i) => (
+                <div
+                  key={i}
+                  className={`text-xs px-2 py-1 rounded flex items-center gap-1.5 ${
+                    w.level === "error"
+                      ? "bg-red-900/40 text-red-300"
+                      : w.level === "warn"
+                      ? "bg-amber-900/40 text-amber-300"
+                      : "bg-gray-700/60 text-gray-400"
+                  }`}
+                >
+                  <span>{w.level === "error" ? "✕" : w.level === "warn" ? "⚠" : "ℹ"}</span>
+                  {w.text}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
