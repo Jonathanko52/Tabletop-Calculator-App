@@ -18,7 +18,7 @@ interface Props {
 
 type Mode = "none" | "new" | "import" | "library";
 
-const EMPTY_FORM: ArmyCreate = { name: "", faction: "", points_limit: 2000 };
+const EMPTY_FORM: ArmyCreate = { name: "", faction: "", points_limit: 2000, notes: "" };
 const STORAGE_KEY = "tabletop_army_order";
 
 function loadStoredOrder(armies: Army[]): number[] {

@@ -11,6 +11,7 @@ class Army(Base):
     name = Column(String, nullable=False)
     faction = Column(String, nullable=False)
     points_limit = Column(Integer, default=2000)
+    notes = Column(String, default="")
     created_at = Column(DateTime, default=datetime.utcnow)
 
     units = relationship("Unit", back_populates="army", cascade="all, delete-orphan")

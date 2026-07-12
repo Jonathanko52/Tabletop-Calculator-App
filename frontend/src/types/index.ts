@@ -67,6 +67,7 @@ export interface Army {
   name: string;
   faction: string;
   points_limit: number;
+  notes: string;
   created_at: string;
   units: Unit[];
 }
@@ -75,12 +76,14 @@ export interface ArmyCreate {
   name: string;
   faction: string;
   points_limit: number;
+  notes: string;
 }
 
 export interface ArmyImport {
   name: string;
   faction: string;
   points_limit: number;
+  notes: string;
   units: UnitCreate[];
 }
 

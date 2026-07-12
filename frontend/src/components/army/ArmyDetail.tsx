@@ -46,6 +46,7 @@ export default function ArmyDetail({
     name: army.name,
     faction: army.faction,
     points_limit: army.points_limit,
+    notes: army.notes ?? "",
   });
 
   // Picker state lifted here so it survives picker unmount/remount
@@ -115,6 +116,7 @@ export default function ArmyDetail({
       name: army.name,
       faction: army.faction,
       points_limit: army.points_limit,
+      notes: army.notes ?? "",
       units: army.units.map((u) => ({
         name: u.name,
         points_cost: u.points_cost,
@@ -215,6 +217,13 @@ export default function ArmyDetail({
               className="input w-32"
             />
           </div>
+          <textarea
+            rows={2}
+            placeholder="Army notes (strategy, event history, etc.)"
+            value={armyForm.notes}
+            onChange={(e) => setArmyForm({ ...armyForm, notes: e.target.value })}
+            className="input resize-none text-sm"
+          />
           <div className="flex gap-2 justify-end">
             <button type="button" onClick={() => setEditingArmy(false)} className="btn-secondary text-sm">Cancel</button>
             <button type="submit" className="btn-primary text-sm">Save</button>
@@ -226,6 +235,9 @@ export default function ArmyDetail({
             <div>
               <h1 className="text-xl font-bold text-white">{army.name}</h1>
               <p className="text-sm text-gray-400">{army.faction}</p>
+              {army.notes && (
+                <p className="text-xs text-gray-500 mt-1 whitespace-pre-wrap">{army.notes}</p>
+              )}
             </div>
             <div className="flex gap-2">
               <button onClick={handleExportArmy} className="btn-secondary text-xs">Save</button>

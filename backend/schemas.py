@@ -82,6 +82,7 @@ class ArmyBase(BaseModel):
     name: str
     faction: str
     points_limit: int = 2000
+    notes: str = ""
 
 
 class ArmyCreate(ArmyBase):
