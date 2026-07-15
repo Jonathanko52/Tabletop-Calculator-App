@@ -258,43 +258,38 @@ export default function ArmyDetail({
               </button>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            {/* Ready bar — hard limit */}
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between text-xs">
-                <span className="text-green-400 font-medium">Ready: {readyPoints} / {army.points_limit} pts</span>
-                <span className={overLimit ? "text-red-400 font-semibold" : "text-gray-500"}>
-                  {overLimit ? `${readyPoints - army.points_limit} over` : `${army.points_limit - readyPoints} remaining`}
-                </span>
-              </div>
-              <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all ${overLimit ? "bg-red-500" : "bg-green-500"}`}
-                  style={{ width: `${readyPct}%` }}
-                />
-              </div>
+          {/* Points summary + segmented bar */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-3 text-xs">
+              <span className="text-green-400 font-medium">{readyPoints} ready</span>
+              {otherPoints > 0 && (
+                <span className="text-amber-400">{otherPoints} in progress</span>
+              )}
+              <span className={`ml-auto font-medium ${overLimit ? "text-red-400" : "text-gray-500"}`}>
+                {overLimit
+                  ? `${totalPoints - army.points_limit} pts over`
+                  : `${army.points_limit - totalPoints} pts remaining`} / {army.points_limit}
+              </span>
             </div>
-            {/* Other bar — soft, informational */}
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between text-xs">
-                <span className="text-amber-400 font-medium">In progress: {otherPoints} pts</span>
-              </div>
-              <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all bg-amber-500/60"
-                  style={{ width: `${Math.min(100, (otherPoints / (army.points_limit || 1)) * 100)}%` }}
-                />
-              </div>
+            <div className="h-2 bg-gray-700 rounded-full overflow-hidden flex">
+              <div
+                className={`h-full transition-all ${overLimit ? "bg-red-500" : "bg-green-500"}`}
+                style={{ width: `${Math.min(100, (readyPoints / army.points_limit) * 100)}%` }}
+              />
+              <div
+                className="h-full transition-all bg-amber-500/60"
+                style={{ width: `${Math.min(100 - Math.min(100, (readyPoints / army.points_limit) * 100), (otherPoints / army.points_limit) * 100)}%` }}
+              />
             </div>
           </div>
 
-          {/* Validation warnings */}
+          {/* Validation warnings — inline row */}
           {warnings.length > 0 && (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-wrap gap-1.5">
               {warnings.map((w, i) => (
-                <div
+                <span
                   key={i}
-                  className={`text-xs px-2 py-1 rounded flex items-center gap-1.5 ${
+                  className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${
                     w.level === "error"
                       ? "bg-red-900/40 text-red-300"
                       : w.level === "warn"
@@ -304,7 +299,7 @@ export default function ArmyDetail({
                 >
                   <span>{w.level === "error" ? "✕" : w.level === "warn" ? "⚠" : "ℹ"}</span>
                   {w.text}
-                </div>
+                </span>
               ))}
             </div>
           )}
