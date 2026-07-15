@@ -158,3 +158,26 @@ class UnitEffectivenessOut(BaseModel):
     unit_name: str
     points_cost: int
     results: list[WeaponEffectiveness]
+
+
+# --- Match-up ---
+
+class MatchupRequest(BaseModel):
+    attacker_id: int
+    defender_id: int
+
+
+class WeaponMatchupResult(BaseModel):
+    weapon_name: str
+    weapon_type: str
+    expected_damage: float
+    models_killed: float
+    damage_per_point: float
+
+
+class MatchupOut(BaseModel):
+    attacker: UnitOut
+    defender: UnitOut
+    weapons: list[WeaponMatchupResult]
+    total_expected_damage: float
+    total_models_killed: float

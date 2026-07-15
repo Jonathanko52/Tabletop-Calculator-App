@@ -142,3 +142,19 @@ export interface UnitEffectivenessOut {
   points_cost: number;
   results: WeaponEffectiveness[];
 }
+
+export interface WeaponMatchupResult {
+  weapon_name: string;
+  weapon_type: string;
+  expected_damage: number;
+  models_killed: number;
+  damage_per_point: number;
+}
+
+export interface MatchupOut {
+  attacker: Unit;
+  defender: Unit;
+  weapons: WeaponMatchupResult[];
+  total_expected_damage: number;
+  total_models_killed: number;
+}

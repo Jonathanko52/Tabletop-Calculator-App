@@ -112,3 +112,39 @@ def calculate_weapon_damage(
         })
 
     return results
+
+
+def calculate_weapon_matchup(
+    attacks: str,
+    bs_ws: int,
+    strength: int,
+    ap: int,
+    damage: str,
+    attacker_points: int,
+    defender_toughness: int,
+    defender_save: int,
+    defender_wounds: int,
+) -> dict:
+    """
+    Calculate expected damage for one weapon against one specific defender profile.
+    Returns expected_damage, models_killed, and damage_per_point.
+    """
+    expected_attacks = _parse_dice(attacks)
+    expected_damage  = _parse_dice(damage)
+
+    p_hit   = _p_success(bs_ws)
+    p_wound = _p_success(_wound_roll_needed(strength, defender_toughness))
+
+    effective_save = defender_save - ap
+    p_fail_save    = max(0.0, min(1.0, (effective_save - 1) / 6))
+
+    exp_dmg = expected_attacks * p_hit * p_wound * p_fail_save * expected_damage
+
+    models_killed = exp_dmg / defender_wounds if defender_wounds > 0 else 0.0
+    dpp = exp_dmg / attacker_points if attacker_points > 0 else 0.0
+
+    return {
+        "expected_damage": round(exp_dmg, 3),
+        "models_killed":   round(models_killed, 3),
+        "damage_per_point": round(dpp, 4),
+    }

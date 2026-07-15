@@ -10,7 +10,7 @@ from database import engine, SessionLocal, get_db
 import models
 import schemas
 from routers import armies, units, unit_templates
-from effectiveness.calculator import calculate_weapon_damage
+from effectiveness.calculator import calculate_weapon_damage, calculate_weapon_matchup
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -94,6 +94,46 @@ def get_unit_effectiveness(unit_id: int, db: Session = Depends(get_db)):
         unit_name=unit.name,
         points_cost=unit.points_cost,
         results=results,
+    )
+
+
+@app.post("/effectiveness/matchup", response_model=schemas.MatchupOut)
+def get_matchup(payload: schemas.MatchupRequest, db: Session = Depends(get_db)):
+    attacker = db.query(models.Unit).filter(models.Unit.id == payload.attacker_id).first()
+    defender = db.query(models.Unit).filter(models.Unit.id == payload.defender_id).first()
+    if not attacker:
+        raise HTTPException(status_code=404, detail="Attacker not found")
+    if not defender:
+        raise HTTPException(status_code=404, detail="Defender not found")
+
+    weapon_results = []
+    for weapon in attacker.weapons:
+        r = calculate_weapon_matchup(
+            attacks=weapon.attacks,
+            bs_ws=weapon.bs_ws,
+            strength=weapon.strength,
+            ap=weapon.ap,
+            damage=weapon.damage,
+            attacker_points=attacker.points_cost,
+            defender_toughness=defender.toughness,
+            defender_save=defender.save,
+            defender_wounds=defender.wounds,
+        )
+        weapon_results.append(schemas.WeaponMatchupResult(
+            weapon_name=weapon.name,
+            weapon_type=weapon.weapon_type,
+            **r,
+        ))
+
+    total_dmg    = round(sum(w.expected_damage for w in weapon_results), 3)
+    total_killed = round(total_dmg / defender.wounds, 3) if defender.wounds > 0 else 0.0
+
+    return schemas.MatchupOut(
+        attacker=attacker,
+        defender=defender,
+        weapons=weapon_results,
+        total_expected_damage=total_dmg,
+        total_models_killed=total_killed,
     )
 
 
