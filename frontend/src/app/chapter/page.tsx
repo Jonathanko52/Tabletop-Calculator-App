@@ -61,10 +61,22 @@ export default function ChapterPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Header + army picker */}
-      <div className="flex items-center gap-4">
-        <h1 className="text-xl font-bold text-white shrink-0">Chapter Manager</h1>
-        {armies.length > 0 && (
+      {/* Page header */}
+      <div>
+        <h1 className="text-2xl font-bold text-white mb-1">Chapter Manager</h1>
+        <p className="text-gray-400 text-sm">
+          Nicknames, notes, and attachments for your painted and ready units.
+        </p>
+      </div>
+
+      {/* Army selector */}
+      {armies.length === 0 ? (
+        <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
+          Create an army in Army Management to get started.
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium text-gray-300">Army</label>
           <select
             value={selectedId ?? ""}
             onChange={(e) => setSelectedId(Number(e.target.value))}
@@ -72,23 +84,21 @@ export default function ChapterPage() {
           >
             {armies.map((a) => (
               <option key={a.id} value={a.id}>
-                {a.name}
+                {a.name} ({a.faction})
               </option>
             ))}
           </select>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Unit list */}
-      {!selectedArmy ? (
-        <div className="text-gray-500 text-sm text-center py-16">
-          Create an army in Army Management to get started.
+      {selectedArmy && visibleUnits.length === 0 && (
+        <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
+          No painted or ready units in this army yet. Mark units as Painted or Ready on the Army Management page.
         </div>
-      ) : visibleUnits.length === 0 ? (
-        <div className="text-gray-500 text-sm text-center py-16">
-          No painted or ready units in this army yet.
-        </div>
-      ) : (
+      )}
+
+      {selectedArmy && visibleUnits.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visibleUnits.map((unit) => (
             <ChapterUnitCard
