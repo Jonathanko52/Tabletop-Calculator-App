@@ -143,6 +143,20 @@ export interface UnitEffectivenessOut {
   results: WeaponEffectiveness[];
 }
 
+export interface EfficiencyRankItem {
+  unit_id: number;
+  unit_name: string;
+  points_cost: number;
+  total_expected_damage: number;
+  damage_per_point: number;
+}
+
+export interface EfficiencyRankOut {
+  army_id: number;
+  profile: string;
+  units: EfficiencyRankItem[];
+}
+
 export interface WeaponMatchupResult {
   weapon_name: string;
   weapon_type: string;

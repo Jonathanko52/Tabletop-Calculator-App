@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, MatchupOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -70,6 +70,11 @@ export const importUnitTemplates = (data: UnitTemplateCreate[]) =>
 
 export const getUnitEffectiveness = (unitId: number) =>
   request<UnitEffectivenessOut>(`/effectiveness/${unitId}`);
+
+export const getArmyRanking = (armyId: number, profile: string) =>
+  request<EfficiencyRankOut>(
+    `/effectiveness/army/${armyId}/ranking?profile=${encodeURIComponent(profile)}`
+  );
 
 export const getMatchup = (attackerId: number, defenderId: number) =>
   request<MatchupOut>("/effectiveness/matchup", {

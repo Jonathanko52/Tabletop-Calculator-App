@@ -2,7 +2,7 @@ import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -10,7 +10,7 @@ from database import engine, SessionLocal, get_db
 import models
 import schemas
 from routers import armies, units, unit_templates
-from effectiveness.calculator import calculate_weapon_damage, calculate_weapon_matchup
+from effectiveness.calculator import TARGET_PROFILES, calculate_weapon_damage, calculate_weapon_matchup
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -95,6 +95,51 @@ def get_unit_effectiveness(unit_id: int, db: Session = Depends(get_db)):
         points_cost=unit.points_cost,
         results=results,
     )
+
+
+@app.get("/effectiveness/army/{army_id}/ranking", response_model=schemas.EfficiencyRankOut)
+def get_army_ranking(
+    army_id: int,
+    profile: str = Query(default="T4 3+"),
+    db: Session = Depends(get_db),
+):
+    army = db.query(models.Army).filter(models.Army.id == army_id).first()
+    if not army:
+        raise HTTPException(status_code=404, detail="Army not found")
+
+    valid_profiles = {p[0] for p in TARGET_PROFILES}
+    if profile not in valid_profiles:
+        raise HTTPException(status_code=400, detail=f"Unknown profile '{profile}'. Valid options: {sorted(valid_profiles)}")
+
+    items: list[schemas.EfficiencyRankItem] = []
+    for unit in army.units:
+        if not unit.weapons:
+            continue
+        total_dmg = 0.0
+        for weapon in unit.weapons:
+            per_profile = calculate_weapon_damage(
+                attacks=weapon.attacks,
+                bs_ws=weapon.bs_ws,
+                strength=weapon.strength,
+                ap=weapon.ap,
+                damage=weapon.damage,
+                points_cost=unit.points_cost,
+            )
+            for entry in per_profile:
+                if entry["target_profile"] == profile:
+                    total_dmg += entry["expected_damage"]
+                    break
+        dpp = round(total_dmg / unit.points_cost, 4) if unit.points_cost > 0 else 0.0
+        items.append(schemas.EfficiencyRankItem(
+            unit_id=unit.id,
+            unit_name=unit.name,
+            points_cost=unit.points_cost,
+            total_expected_damage=round(total_dmg, 3),
+            damage_per_point=dpp,
+        ))
+
+    items.sort(key=lambda x: x.damage_per_point, reverse=True)
+    return schemas.EfficiencyRankOut(army_id=army_id, profile=profile, units=items)
 
 
 @app.post("/effectiveness/matchup", response_model=schemas.MatchupOut)

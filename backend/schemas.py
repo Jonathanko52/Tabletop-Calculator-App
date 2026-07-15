@@ -160,6 +160,22 @@ class UnitEffectivenessOut(BaseModel):
     results: list[WeaponEffectiveness]
 
 
+# --- Efficiency Ranking ---
+
+class EfficiencyRankItem(BaseModel):
+    unit_id: int
+    unit_name: str
+    points_cost: int
+    total_expected_damage: float
+    damage_per_point: float
+
+
+class EfficiencyRankOut(BaseModel):
+    army_id: int
+    profile: str
+    units: list[EfficiencyRankItem]
+
+
 # --- Match-up ---
 
 class MatchupRequest(BaseModel):
