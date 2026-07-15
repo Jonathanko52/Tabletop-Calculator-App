@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { href: "/army", label: "Army Management" },
-  { href: "/effectiveness", label: "Unit Effectiveness" },
+  { href: "/effectiveness", label: "Calculator" },
   { href: "/chapter", label: "Chapter Manager" },
 ];
 
