@@ -1,14 +1,32 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import type { Army, UnitEffectivenessOut, MatchupOut } from "@/types";
+import type { Army, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
 import * as api from "@/lib/api";
 import UnitSelector from "@/components/effectiveness/UnitSelector";
 import DamageTable from "@/components/effectiveness/DamageTable";
 import MatchupSelector from "@/components/effectiveness/MatchupSelector";
 import MatchupTable from "@/components/effectiveness/MatchupTable";
+import RankingTable from "@/components/effectiveness/RankingTable";
 
-type Tab = "profiles" | "matchup";
+type Tab = "profiles" | "matchup" | "ranking";
+
+const PROFILES = [
+  "T3 5+",
+  "T4 3+",
+  "T4 3+ FNP",
+  "T5 3+",
+  "T6 3+",
+  "T8 2+",
+  "T9 3+",
+  "T12 2+",
+];
+
+const TAB_LABELS: Record<Tab, string> = {
+  profiles: "Weapon Profiles",
+  matchup: "Unit Match-up",
+  ranking: "Efficiency Ranking",
+};
 
 export default function EffectivenessPage() {
   const [tab, setTab] = useState<Tab>("profiles");
@@ -29,6 +47,13 @@ export default function EffectivenessPage() {
   const [matchupResult, setMatchupResult] = useState<MatchupOut | null>(null);
   const [loadingMatchup, setLoadingMatchup] = useState(false);
   const [matchupError, setMatchupError] = useState<string | null>(null);
+
+  // Efficiency ranking tab
+  const [rankingArmyId, setRankingArmyId] = useState<number | null>(null);
+  const [rankingProfile, setRankingProfile] = useState<string>(PROFILES[1]); // default: T4 3+
+  const [rankingResult, setRankingResult] = useState<EfficiencyRankOut | null>(null);
+  const [loadingRanking, setLoadingRanking] = useState(false);
+  const [rankingError, setRankingError] = useState<string | null>(null);
 
   const loadArmies = useCallback(async () => {
     try {
@@ -75,6 +100,21 @@ export default function EffectivenessPage() {
     }
   }
 
+  async function handleRankUnits() {
+    if (rankingArmyId === null) return;
+    setRankingResult(null);
+    setRankingError(null);
+    setLoadingRanking(true);
+    try {
+      const data = await api.getArmyRanking(rankingArmyId, rankingProfile);
+      setRankingResult(data);
+    } catch (e) {
+      setRankingError(String(e));
+    } finally {
+      setLoadingRanking(false);
+    }
+  }
+
   if (loadingArmies) {
     return (
       <div className="flex items-center justify-center h-64 text-gray-400">
@@ -104,7 +144,7 @@ export default function EffectivenessPage() {
 
       {/* Tab bar */}
       <div className="flex gap-1 bg-gray-800/60 rounded-lg p-1 w-fit">
-        {(["profiles", "matchup"] as Tab[]).map((t) => (
+        {(Object.keys(TAB_LABELS) as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -114,7 +154,7 @@ export default function EffectivenessPage() {
                 : "text-gray-400 hover:text-gray-200"
             }`}
           >
-            {t === "profiles" ? "Weapon Profiles" : "Unit Match-up"}
+            {TAB_LABELS[t]}
           </button>
         ))}
       </div>
@@ -182,6 +222,80 @@ export default function EffectivenessPage() {
           {!matchupResult && !loadingMatchup && !matchupError && (
             <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
               Pick an attacker and defender above, then click Calculate Match-up.
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Efficiency Ranking tab */}
+      {tab === "ranking" && (
+        <>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-4 items-end">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-gray-300">Army</label>
+                {armies.length === 0 ? (
+                  <p className="text-gray-500 text-sm">No armies found.</p>
+                ) : (
+                  <select
+                    value={rankingArmyId ?? ""}
+                    onChange={(e) => {
+                      setRankingArmyId(Number(e.target.value));
+                      setRankingResult(null);
+                    }}
+                    className="input"
+                  >
+                    <option value="" disabled>— pick an army —</option>
+                    {armies.map((a) => (
+                      <option key={a.id} value={a.id}>
+                        {a.name} ({a.faction})
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-gray-300">Target Profile</label>
+                <select
+                  value={rankingProfile}
+                  onChange={(e) => {
+                    setRankingProfile(e.target.value);
+                    setRankingResult(null);
+                  }}
+                  className="input"
+                >
+                  {PROFILES.map((p) => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </select>
+              </div>
+
+              <button
+                onClick={handleRankUnits}
+                disabled={rankingArmyId === null || loadingRanking}
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loadingRanking ? "Ranking…" : "Rank Units"}
+              </button>
+            </div>
+          </div>
+
+          {loadingRanking && (
+            <div className="text-gray-400 text-sm">Calculating…</div>
+          )}
+
+          {rankingError && (
+            <p className="text-red-400 text-sm">{rankingError}</p>
+          )}
+
+          {rankingResult && !loadingRanking && (
+            <RankingTable result={rankingResult} />
+          )}
+
+          {!rankingResult && !loadingRanking && !rankingError && (
+            <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
+              Pick an army and target profile above, then click Rank Units.
             </div>
           )}
         </>
