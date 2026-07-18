@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import type { Army, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
+import { useState } from "react";
+import type { UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
 import * as api from "@/lib/api";
+import { useArmies } from "@/hooks/useArmies";
 import UnitSelector from "@/components/effectiveness/UnitSelector";
 import DamageTable from "@/components/effectiveness/DamageTable";
 import MatchupSelector from "@/components/effectiveness/MatchupSelector";
@@ -32,14 +33,13 @@ export default function EffectivenessPage() {
   const [tab, setTab] = useState<Tab>("profiles");
 
   // Shared
-  const [armies, setArmies] = useState<Army[]>([]);
-  const [loadingArmies, setLoadingArmies] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { armies, loading: loadingArmies, error, reload: loadArmies } = useArmies();
 
   // Weapon profiles tab
   const [selectedUnitId, setSelectedUnitId] = useState<number | null>(null);
   const [profileResult, setProfileResult] = useState<UnitEffectivenessOut | null>(null);
   const [loadingCalc, setLoadingCalc] = useState(false);
+  const [calcError, setCalcError] = useState<string | null>(null);
 
   // Match-up tab
   const [attackerId, setAttackerId] = useState<number | null>(null);
@@ -55,31 +55,16 @@ export default function EffectivenessPage() {
   const [loadingRanking, setLoadingRanking] = useState(false);
   const [rankingError, setRankingError] = useState<string | null>(null);
 
-  const loadArmies = useCallback(async () => {
-    try {
-      const data = await api.getArmies();
-      setArmies(data);
-    } catch (e) {
-      setError(String(e));
-    } finally {
-      setLoadingArmies(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadArmies();
-  }, [loadArmies]);
-
   async function handleSelectUnit(unitId: number) {
     setSelectedUnitId(unitId);
     setProfileResult(null);
-    setError(null);
+    setCalcError(null);
     setLoadingCalc(true);
     try {
       const data = await api.getUnitEffectiveness(unitId);
       setProfileResult(data);
     } catch (e) {
-      setError(String(e));
+      setCalcError(String(e));
     } finally {
       setLoadingCalc(false);
     }
@@ -172,8 +157,8 @@ export default function EffectivenessPage() {
             <div className="text-gray-400 text-sm">Calculating…</div>
           )}
 
-          {error && profileResult === null && !loadingCalc && (
-            <p className="text-red-400 text-sm">{error}</p>
+          {calcError && profileResult === null && !loadingCalc && (
+            <p className="text-red-400 text-sm">{calcError}</p>
           )}
 
           {profileResult && !loadingCalc && (
