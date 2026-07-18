@@ -1,27 +1,19 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import type { Army, Unit } from "@/types";
-import * as api from "@/lib/api";
+import { useEffect, useState } from "react";
+import type { Unit } from "@/types";
 import ChapterUnitCard from "@/components/chapter/ChapterUnitCard";
+import { useArmies } from "@/hooks/useArmies";
 
 export default function ChapterPage() {
-  const [armies, setArmies] = useState<Army[]>([]);
+  const { armies, setArmies, loading, error, reload } = useArmies();
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadArmies = useCallback(async () => {
-    const data = await api.getArmies();
-    setArmies(data);
-    setSelectedId((prev) => prev ?? (data[0]?.id ?? null));
-  }, []);
 
   useEffect(() => {
-    loadArmies()
-      .catch((e) => setError(String(e)))
-      .finally(() => setLoading(false));
-  }, [loadArmies]);
+    if (armies.length > 0) {
+      setSelectedId((prev) => prev ?? armies[0].id);
+    }
+  }, [armies]);
 
   const selectedArmy = armies.find((a) => a.id === selectedId) ?? null;
   const visibleUnits =
@@ -54,7 +46,7 @@ export default function ChapterPage() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-3">
         <p className="text-red-400 text-sm">Could not connect to backend: {error}</p>
-        <button onClick={loadArmies} className="btn-secondary text-sm">Retry</button>
+        <button onClick={reload} className="btn-secondary text-sm">Retry</button>
       </div>
     );
   }
