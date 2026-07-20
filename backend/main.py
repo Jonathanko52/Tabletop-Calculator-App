@@ -61,6 +61,39 @@ app.include_router(units.router)
 app.include_router(unit_templates.router)
 
 
+@app.get("/effectiveness/template/{template_id}", response_model=schemas.UnitEffectivenessOut)
+def get_template_effectiveness(template_id: int, db: Session = Depends(get_db)):
+    tmpl = db.query(models.UnitTemplate).filter(models.UnitTemplate.id == template_id).first()
+    if not tmpl:
+        raise HTTPException(status_code=404, detail="Unit template not found")
+
+    results: list[schemas.WeaponEffectiveness] = []
+    for weapon in tmpl.weapons:
+        per_profile = calculate_weapon_damage(
+            attacks=weapon.attacks,
+            bs_ws=weapon.bs_ws,
+            strength=weapon.strength,
+            ap=weapon.ap,
+            damage=weapon.damage,
+            points_cost=tmpl.points_cost,
+        )
+        for entry in per_profile:
+            results.append(schemas.WeaponEffectiveness(
+                weapon_name=weapon.name,
+                weapon_type=weapon.weapon_type,
+                target_profile=entry["target_profile"],
+                expected_damage=entry["expected_damage"],
+                damage_per_point=entry["damage_per_point"],
+            ))
+
+    return schemas.UnitEffectivenessOut(
+        unit_id=tmpl.id,
+        unit_name=tmpl.name,
+        points_cost=tmpl.points_cost,
+        results=results,
+    )
+
+
 @app.get("/effectiveness/{unit_id}", response_model=schemas.UnitEffectivenessOut)
 def get_unit_effectiveness(unit_id: int, db: Session = Depends(get_db)):
     unit = db.query(models.Unit).filter(models.Unit.id == unit_id).first()
