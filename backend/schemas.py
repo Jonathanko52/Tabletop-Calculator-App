@@ -176,6 +176,12 @@ class EfficiencyRankOut(BaseModel):
     units: list[EfficiencyRankItem]
 
 
+class FactionRankOut(BaseModel):
+    faction: str
+    profile: str
+    units: list[EfficiencyRankItem]
+
+
 # --- Match-up ---
 
 class MatchupRequest(BaseModel):

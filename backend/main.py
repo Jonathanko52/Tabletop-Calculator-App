@@ -130,6 +130,49 @@ def get_unit_effectiveness(unit_id: int, db: Session = Depends(get_db)):
     )
 
 
+@app.get("/effectiveness/faction/{faction}/ranking", response_model=schemas.FactionRankOut)
+def get_faction_ranking(
+    faction: str,
+    profile: str = Query(default="T4 3+"),
+    db: Session = Depends(get_db),
+):
+    valid_profiles = {p[0] for p in TARGET_PROFILES}
+    if profile not in valid_profiles:
+        raise HTTPException(status_code=400, detail=f"Unknown profile '{profile}'. Valid: {sorted(valid_profiles)}")
+
+    templates = db.query(models.UnitTemplate).filter(models.UnitTemplate.source == faction).all()
+
+    items: list[schemas.EfficiencyRankItem] = []
+    for tmpl in templates:
+        if not tmpl.weapons:
+            continue
+        total_dmg = 0.0
+        for weapon in tmpl.weapons:
+            per_profile = calculate_weapon_damage(
+                attacks=weapon.attacks,
+                bs_ws=weapon.bs_ws,
+                strength=weapon.strength,
+                ap=weapon.ap,
+                damage=weapon.damage,
+                points_cost=tmpl.points_cost,
+            )
+            for entry in per_profile:
+                if entry["target_profile"] == profile:
+                    total_dmg += entry["expected_damage"]
+                    break
+        dpp = round(total_dmg / tmpl.points_cost, 4) if tmpl.points_cost > 0 else 0.0
+        items.append(schemas.EfficiencyRankItem(
+            unit_id=tmpl.id,
+            unit_name=tmpl.name,
+            points_cost=tmpl.points_cost,
+            total_expected_damage=round(total_dmg, 3),
+            damage_per_point=dpp,
+        ))
+
+    items.sort(key=lambda x: x.damage_per_point, reverse=True)
+    return schemas.FactionRankOut(faction=faction, profile=profile, units=items)
+
+
 @app.get("/effectiveness/army/{army_id}/ranking", response_model=schemas.EfficiencyRankOut)
 def get_army_ranking(
     army_id: int,
