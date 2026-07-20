@@ -183,6 +183,11 @@ class MatchupRequest(BaseModel):
     defender_id: int
 
 
+class MatchupTemplateRequest(BaseModel):
+    attacker_template_id: int
+    defender_template_id: int
+
+
 class WeaponMatchupResult(BaseModel):
     weapon_name: str
     weapon_type: str
@@ -194,6 +199,14 @@ class WeaponMatchupResult(BaseModel):
 class MatchupOut(BaseModel):
     attacker: UnitOut
     defender: UnitOut
+    weapons: list[WeaponMatchupResult]
+    total_expected_damage: float
+    total_models_killed: float
+
+
+class TemplateMatchupOut(BaseModel):
+    attacker: UnitTemplateOut
+    defender: UnitTemplateOut
     weapons: list[WeaponMatchupResult]
     total_expected_damage: float
     total_models_killed: float
