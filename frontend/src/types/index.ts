@@ -172,3 +172,11 @@ export interface MatchupOut {
   total_expected_damage: number;
   total_models_killed: number;
 }
+
+export interface TemplateMatchupOut {
+  attacker: UnitTemplate;
+  defender: UnitTemplate;
+  weapons: WeaponMatchupResult[];
+  total_expected_damage: number;
+  total_models_killed: number;
+}
