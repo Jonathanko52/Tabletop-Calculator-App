@@ -157,6 +157,12 @@ export interface EfficiencyRankOut {
   units: EfficiencyRankItem[];
 }
 
+export interface FactionRankOut {
+  faction: string;
+  profile: string;
+  units: EfficiencyRankItem[];
+}
+
 export interface WeaponMatchupResult {
   weapon_name: string;
   weapon_type: string;
