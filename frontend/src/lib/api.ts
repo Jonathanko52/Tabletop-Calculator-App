@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut, TemplateMatchupOut, FactionRankOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -74,6 +74,20 @@ export const getUnitEffectiveness = (unitId: number) =>
 export const getArmyRanking = (armyId: number, profile: string) =>
   request<EfficiencyRankOut>(
     `/effectiveness/army/${armyId}/ranking?profile=${encodeURIComponent(profile)}`
+  );
+
+export const getTemplateEffectiveness = (templateId: number) =>
+  request<UnitEffectivenessOut>(`/effectiveness/template/${templateId}`);
+
+export const getTemplateMatchup = (attackerTemplateId: number, defenderTemplateId: number) =>
+  request<TemplateMatchupOut>("/effectiveness/matchup-templates", {
+    method: "POST",
+    body: JSON.stringify({ attacker_template_id: attackerTemplateId, defender_template_id: defenderTemplateId }),
+  });
+
+export const getFactionRanking = (faction: string, profile: string) =>
+  request<FactionRankOut>(
+    `/effectiveness/faction/${encodeURIComponent(faction)}/ranking?profile=${encodeURIComponent(profile)}`
   );
 
 export const getMatchup = (attackerId: number, defenderId: number) =>
