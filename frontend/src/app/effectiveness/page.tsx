@@ -3,10 +3,8 @@
 import { useState, useEffect } from "react";
 import type { UnitTemplate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut } from "@/types";
 import * as api from "@/lib/api";
-import { useArmies } from "@/hooks/useArmies";
 import FactionUnitPicker from "@/components/effectiveness/FactionUnitPicker";
 import DamageTable from "@/components/effectiveness/DamageTable";
-import MatchupSelector from "@/components/effectiveness/MatchupSelector";
 import MatchupTable from "@/components/effectiveness/MatchupTable";
 import RankingTable from "@/components/effectiveness/RankingTable";
 
@@ -31,9 +29,6 @@ const TAB_LABELS: Record<Tab, string> = {
 
 export default function EffectivenessPage() {
   const [tab, setTab] = useState<Tab>("profiles");
-
-  // Shared
-  const { armies, loading: loadingArmies, error, reload: loadArmies } = useArmies();
 
   // Templates (shared across tabs)
   const [unitTemplates, setUnitTemplates] = useState<UnitTemplate[]>([]);
@@ -102,24 +97,6 @@ export default function EffectivenessPage() {
     } finally {
       setLoadingRanking(false);
     }
-  }
-
-  if (loadingArmies) {
-    return (
-      <div className="flex items-center justify-center h-64 text-gray-400">
-        Loading…
-      </div>
-    );
-  }
-
-  if (error && !profileResult) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 gap-3">
-        <p className="text-red-400 text-sm">{error}</p>
-        <p className="text-gray-500 text-xs">Make sure FastAPI is running on port 8000.</p>
-        <button onClick={loadArmies} className="btn-secondary text-sm">Retry</button>
-      </div>
-    );
   }
 
   return (
