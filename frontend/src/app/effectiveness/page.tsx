@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { UnitTemplate, UnitEffectivenessOut, TemplateMatchupOut, EfficiencyRankOut } from "@/types";
+import type { UnitTemplate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut } from "@/types";
 import * as api from "@/lib/api";
 import { useArmies } from "@/hooks/useArmies";
 import FactionUnitPicker from "@/components/effectiveness/FactionUnitPicker";
@@ -53,9 +53,9 @@ export default function EffectivenessPage() {
   const [matchupError, setMatchupError] = useState<string | null>(null);
 
   // Efficiency ranking tab
-  const [rankingArmyId, setRankingArmyId] = useState<number | null>(null);
-  const [rankingProfile, setRankingProfile] = useState<string>(PROFILES[1]); // default: T4 3+
-  const [rankingResult, setRankingResult] = useState<EfficiencyRankOut | null>(null);
+  const [rankingFaction, setRankingFaction] = useState<string>("");
+  const [rankingProfile, setRankingProfile] = useState<string>(PROFILES[1]);
+  const [rankingResult, setRankingResult] = useState<FactionRankOut | null>(null);
   const [loadingRanking, setLoadingRanking] = useState(false);
   const [rankingError, setRankingError] = useState<string | null>(null);
 
@@ -90,12 +90,12 @@ export default function EffectivenessPage() {
   }
 
   async function handleRankUnits() {
-    if (rankingArmyId === null) return;
+    if (!rankingFaction) return;
     setRankingResult(null);
     setRankingError(null);
     setLoadingRanking(true);
     try {
-      const data = await api.getArmyRanking(rankingArmyId, rankingProfile);
+      const data = await api.getFactionRanking(rankingFaction, rankingProfile);
       setRankingResult(data);
     } catch (e) {
       setRankingError(String(e));
@@ -234,55 +234,41 @@ export default function EffectivenessPage() {
       {/* Efficiency Ranking tab */}
       {tab === "ranking" && (
         <>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap gap-4 items-end">
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-300">Army</label>
-                {armies.length === 0 ? (
-                  <p className="text-gray-500 text-sm">No armies found.</p>
-                ) : (
-                  <select
-                    value={rankingArmyId ?? ""}
-                    onChange={(e) => {
-                      setRankingArmyId(Number(e.target.value));
-                      setRankingResult(null);
-                    }}
-                    className="input"
-                  >
-                    <option value="" disabled>— pick an army —</option>
-                    {armies.map((a) => (
-                      <option key={a.id} value={a.id}>
-                        {a.name} ({a.faction})
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-300">Target Profile</label>
-                <select
-                  value={rankingProfile}
-                  onChange={(e) => {
-                    setRankingProfile(e.target.value);
-                    setRankingResult(null);
-                  }}
-                  className="input"
-                >
-                  {PROFILES.map((p) => (
-                    <option key={p} value={p}>{p}</option>
-                  ))}
-                </select>
-              </div>
-
-              <button
-                onClick={handleRankUnits}
-                disabled={rankingArmyId === null || loadingRanking}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          <div className="flex flex-wrap gap-4 items-end">
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-300">Faction</label>
+              <select
+                value={rankingFaction}
+                onChange={(e) => { setRankingFaction(e.target.value); setRankingResult(null); }}
+                className="input"
               >
-                {loadingRanking ? "Ranking…" : "Rank Units"}
-              </button>
+                <option value="" disabled>— pick a faction —</option>
+                {[...new Set(unitTemplates.map((t) => t.source))].sort().map((f) => (
+                  <option key={f} value={f}>{f}</option>
+                ))}
+              </select>
             </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-300">Target Profile</label>
+              <select
+                value={rankingProfile}
+                onChange={(e) => { setRankingProfile(e.target.value); setRankingResult(null); }}
+                className="input"
+              >
+                {PROFILES.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              onClick={handleRankUnits}
+              disabled={!rankingFaction || loadingRanking}
+              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loadingRanking ? "Ranking…" : "Rank Units"}
+            </button>
           </div>
 
           {loadingRanking && (

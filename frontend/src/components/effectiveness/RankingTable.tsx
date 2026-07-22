@@ -1,6 +1,6 @@
-import type { EfficiencyRankOut } from "@/types";
+import type { FactionRankOut } from "@/types";
 
-export default function RankingTable({ result }: { result: EfficiencyRankOut }) {
+export default function RankingTable({ result }: { result: FactionRankOut }) {
   const { profile, units } = result;
 
   if (units.length === 0) {
