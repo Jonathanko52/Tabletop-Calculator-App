@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import type { UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
+import { useState, useEffect } from "react";
+import type { UnitTemplate, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
 import * as api from "@/lib/api";
 import { useArmies } from "@/hooks/useArmies";
-import UnitSelector from "@/components/effectiveness/UnitSelector";
+import FactionUnitPicker from "@/components/effectiveness/FactionUnitPicker";
 import DamageTable from "@/components/effectiveness/DamageTable";
 import MatchupSelector from "@/components/effectiveness/MatchupSelector";
 import MatchupTable from "@/components/effectiveness/MatchupTable";
@@ -35,8 +35,12 @@ export default function EffectivenessPage() {
   // Shared
   const { armies, loading: loadingArmies, error, reload: loadArmies } = useArmies();
 
+  // Templates (shared across tabs)
+  const [unitTemplates, setUnitTemplates] = useState<UnitTemplate[]>([]);
+  useEffect(() => { api.getUnitTemplates().then(setUnitTemplates).catch(() => {}); }, []);
+
   // Weapon profiles tab
-  const [selectedUnitId, setSelectedUnitId] = useState<number | null>(null);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
   const [profileResult, setProfileResult] = useState<UnitEffectivenessOut | null>(null);
   const [loadingCalc, setLoadingCalc] = useState(false);
   const [calcError, setCalcError] = useState<string | null>(null);
@@ -55,13 +59,13 @@ export default function EffectivenessPage() {
   const [loadingRanking, setLoadingRanking] = useState(false);
   const [rankingError, setRankingError] = useState<string | null>(null);
 
-  async function handleSelectUnit(unitId: number) {
-    setSelectedUnitId(unitId);
+  async function handleSelectTemplate(templateId: number) {
+    setSelectedTemplateId(templateId);
     setProfileResult(null);
     setCalcError(null);
     setLoadingCalc(true);
     try {
-      const data = await api.getUnitEffectiveness(unitId);
+      const data = await api.getTemplateEffectiveness(templateId);
       setProfileResult(data);
     } catch (e) {
       setCalcError(String(e));
@@ -147,10 +151,11 @@ export default function EffectivenessPage() {
       {/* Weapon Profiles tab */}
       {tab === "profiles" && (
         <>
-          <UnitSelector
-            armies={armies}
-            selectedUnitId={selectedUnitId}
-            onChange={handleSelectUnit}
+          <FactionUnitPicker
+            label="Select Unit"
+            templates={unitTemplates}
+            selectedId={selectedTemplateId}
+            onChange={handleSelectTemplate}
           />
 
           {loadingCalc && (
@@ -164,14 +169,14 @@ export default function EffectivenessPage() {
           {profileResult && !loadingCalc && (
             profileResult.results.length === 0 ? (
               <div className="bg-gray-800 rounded-xl p-6 text-center text-gray-400 text-sm">
-                This unit has no weapons. Add weapons on the Army Management page to see calculations.
+                This unit has no weapons.
               </div>
             ) : (
               <DamageTable data={profileResult} />
             )
           )}
 
-          {!selectedUnitId && !loadingCalc && (
+          {!selectedTemplateId && !loadingCalc && (
             <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
               Select a unit above to calculate its damage output against all target profiles.
             </div>
