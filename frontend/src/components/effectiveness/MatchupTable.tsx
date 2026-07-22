@@ -1,6 +1,6 @@
-import type { MatchupOut } from "@/types";
+import type { TemplateMatchupOut } from "@/types";
 
-export default function MatchupTable({ result }: { result: MatchupOut }) {
+export default function MatchupTable({ result }: { result: TemplateMatchupOut }) {
   const { attacker, defender, weapons, total_expected_damage, total_models_killed } = result;
 
   return (

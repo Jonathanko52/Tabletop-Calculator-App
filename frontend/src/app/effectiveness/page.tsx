@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { UnitTemplate, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut } from "@/types";
+import type { UnitTemplate, UnitEffectivenessOut, TemplateMatchupOut, EfficiencyRankOut } from "@/types";
 import * as api from "@/lib/api";
 import { useArmies } from "@/hooks/useArmies";
 import FactionUnitPicker from "@/components/effectiveness/FactionUnitPicker";
@@ -46,9 +46,9 @@ export default function EffectivenessPage() {
   const [calcError, setCalcError] = useState<string | null>(null);
 
   // Match-up tab
-  const [attackerId, setAttackerId] = useState<number | null>(null);
-  const [defenderId, setDefenderId] = useState<number | null>(null);
-  const [matchupResult, setMatchupResult] = useState<MatchupOut | null>(null);
+  const [attackerTemplateId, setAttackerTemplateId] = useState<number | null>(null);
+  const [defenderTemplateId, setDefenderTemplateId] = useState<number | null>(null);
+  const [matchupResult, setMatchupResult] = useState<TemplateMatchupOut | null>(null);
   const [loadingMatchup, setLoadingMatchup] = useState(false);
   const [matchupError, setMatchupError] = useState<string | null>(null);
 
@@ -75,12 +75,12 @@ export default function EffectivenessPage() {
   }
 
   async function handleCalculateMatchup() {
-    if (attackerId === null || defenderId === null) return;
+    if (attackerTemplateId === null || defenderTemplateId === null) return;
     setMatchupResult(null);
     setMatchupError(null);
     setLoadingMatchup(true);
     try {
-      const data = await api.getMatchup(attackerId, defenderId);
+      const data = await api.getTemplateMatchup(attackerTemplateId, defenderTemplateId);
       setMatchupResult(data);
     } catch (e) {
       setMatchupError(String(e));
@@ -187,15 +187,29 @@ export default function EffectivenessPage() {
       {/* Unit Match-up tab */}
       {tab === "matchup" && (
         <>
-          <MatchupSelector
-            armies={armies}
-            attackerId={attackerId}
-            defenderId={defenderId}
-            onAttackerChange={setAttackerId}
-            onDefenderChange={setDefenderId}
-            onCalculate={handleCalculateMatchup}
-            loading={loadingMatchup}
-          />
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FactionUnitPicker
+                label="Attacker"
+                templates={unitTemplates}
+                selectedId={attackerTemplateId}
+                onChange={setAttackerTemplateId}
+              />
+              <FactionUnitPicker
+                label="Defender"
+                templates={unitTemplates}
+                selectedId={defenderTemplateId}
+                onChange={setDefenderTemplateId}
+              />
+            </div>
+            <button
+              onClick={handleCalculateMatchup}
+              disabled={attackerTemplateId === null || defenderTemplateId === null || loadingMatchup}
+              className="btn-primary w-fit disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loadingMatchup ? "Calculating…" : "Calculate Match-up"}
+            </button>
+          </div>
 
           {loadingMatchup && (
             <div className="text-gray-400 text-sm">Calculating…</div>
