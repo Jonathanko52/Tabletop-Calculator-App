@@ -151,12 +151,6 @@ export interface EfficiencyRankItem {
   damage_per_point: number;
 }
 
-export interface EfficiencyRankOut {
-  army_id: number;
-  profile: string;
-  units: EfficiencyRankItem[];
-}
-
 export interface FactionRankOut {
   faction: string;
   profile: string;
@@ -169,14 +163,6 @@ export interface WeaponMatchupResult {
   expected_damage: number;
   models_killed: number;
   damage_per_point: number;
-}
-
-export interface MatchupOut {
-  attacker: Unit;
-  defender: Unit;
-  weapons: WeaponMatchupResult[];
-  total_expected_damage: number;
-  total_models_killed: number;
 }
 
 export interface TemplateMatchupOut {
