@@ -29,8 +29,9 @@ def create_unit(army_id: int, payload: schemas.UnitCreate, db: Session = Depends
     if not army:
         raise HTTPException(status_code=404, detail="Army not found")
 
-    weapons_data = payload.model_dump().pop("weapons", [])
-    unit = models.Unit(army_id=army_id, **{k: v for k, v in payload.model_dump().items() if k != "weapons"})
+    data = payload.model_dump()
+    weapons_data = data.pop("weapons", [])
+    unit = models.Unit(army_id=army_id, **data)
     db.add(unit)
     db.flush()
 
