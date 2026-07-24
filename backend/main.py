@@ -94,7 +94,6 @@ def get_template_effectiveness(template_id: int, db: Session = Depends(get_db)):
     )
 
 
-
 @app.get("/effectiveness/faction/{faction}/ranking", response_model=schemas.FactionRankOut)
 def get_faction_ranking(
     faction: str,
@@ -138,7 +137,6 @@ def get_faction_ranking(
     return schemas.FactionRankOut(faction=faction, profile=profile, units=items)
 
 
-
 @app.post("/effectiveness/matchup-templates", response_model=schemas.TemplateMatchupOut)
 def get_template_matchup(payload: schemas.MatchupTemplateRequest, db: Session = Depends(get_db)):
     attacker = db.query(models.UnitTemplate).filter(models.UnitTemplate.id == payload.attacker_template_id).first()
@@ -171,46 +169,6 @@ def get_template_matchup(payload: schemas.MatchupTemplateRequest, db: Session = 
     total_killed = round(total_dmg / defender.wounds, 3) if defender.wounds > 0 else 0.0
 
     return schemas.TemplateMatchupOut(
-        attacker=attacker,
-        defender=defender,
-        weapons=weapon_results,
-        total_expected_damage=total_dmg,
-        total_models_killed=total_killed,
-    )
-
-
-@app.post("/effectiveness/matchup", response_model=schemas.MatchupOut)
-def get_matchup(payload: schemas.MatchupRequest, db: Session = Depends(get_db)):
-    attacker = db.query(models.Unit).filter(models.Unit.id == payload.attacker_id).first()
-    defender = db.query(models.Unit).filter(models.Unit.id == payload.defender_id).first()
-    if not attacker:
-        raise HTTPException(status_code=404, detail="Attacker not found")
-    if not defender:
-        raise HTTPException(status_code=404, detail="Defender not found")
-
-    weapon_results = []
-    for weapon in attacker.weapons:
-        r = calculate_weapon_matchup(
-            attacks=weapon.attacks,
-            bs_ws=weapon.bs_ws,
-            strength=weapon.strength,
-            ap=weapon.ap,
-            damage=weapon.damage,
-            attacker_points=attacker.points_cost,
-            defender_toughness=defender.toughness,
-            defender_save=defender.save,
-            defender_wounds=defender.wounds,
-        )
-        weapon_results.append(schemas.WeaponMatchupResult(
-            weapon_name=weapon.name,
-            weapon_type=weapon.weapon_type,
-            **r,
-        ))
-
-    total_dmg    = round(sum(w.expected_damage for w in weapon_results), 3)
-    total_killed = round(total_dmg / defender.wounds, 3) if defender.wounds > 0 else 0.0
-
-    return schemas.MatchupOut(
         attacker=attacker,
         defender=defender,
         weapons=weapon_results,
