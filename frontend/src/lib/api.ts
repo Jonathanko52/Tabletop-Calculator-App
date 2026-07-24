@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, MatchupOut, EfficiencyRankOut, TemplateMatchupOut, FactionRankOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -18,8 +18,6 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 // --- Armies ---
 
 export const getArmies = () => request<Army[]>("/armies/");
-
-export const getArmy = (id: number) => request<Army>(`/armies/${id}`);
 
 export const createArmy = (data: ArmyCreate) =>
   request<Army>("/armies/", { method: "POST", body: JSON.stringify(data) });
@@ -68,14 +66,6 @@ export const importUnitTemplates = (data: UnitTemplateCreate[]) =>
 
 // --- Effectiveness ---
 
-export const getUnitEffectiveness = (unitId: number) =>
-  request<UnitEffectivenessOut>(`/effectiveness/${unitId}`);
-
-export const getArmyRanking = (armyId: number, profile: string) =>
-  request<EfficiencyRankOut>(
-    `/effectiveness/army/${armyId}/ranking?profile=${encodeURIComponent(profile)}`
-  );
-
 export const getTemplateEffectiveness = (templateId: number) =>
   request<UnitEffectivenessOut>(`/effectiveness/template/${templateId}`);
 
@@ -90,8 +80,3 @@ export const getFactionRanking = (faction: string, profile: string) =>
     `/effectiveness/faction/${encodeURIComponent(faction)}/ranking?profile=${encodeURIComponent(profile)}`
   );
 
-export const getMatchup = (attackerId: number, defenderId: number) =>
-  request<MatchupOut>("/effectiveness/matchup", {
-    method: "POST",
-    body: JSON.stringify({ attacker_id: attackerId, defender_id: defenderId }),
-  });
