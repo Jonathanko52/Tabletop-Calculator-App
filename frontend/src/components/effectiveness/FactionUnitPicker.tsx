@@ -28,7 +28,7 @@ export default function FactionUnitPicker({ label, templates, selectedId, onChan
   return (
     <div className="flex flex-col gap-1">
       <label className="text-sm font-medium text-gray-300">{label}</label>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2">
         <select
           value={faction}
           onChange={(e) => setFaction(e.target.value)}
