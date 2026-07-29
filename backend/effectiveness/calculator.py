@@ -124,10 +124,15 @@ def calculate_weapon_matchup(
     defender_toughness: int,
     defender_save: int,
     defender_wounds: int,
+    invuln_save: int = 7,
+    fnp: int = 0,
 ) -> dict:
     """
     Calculate expected damage for one weapon against one specific defender profile.
-    Returns expected_damage, models_killed, and damage_per_point.
+    Returns intermediate probabilities plus expected_damage, models_killed, damage_per_point.
+
+    invuln_save: minimum roll needed to pass invuln (7 = no invuln).
+    fnp: minimum roll needed to ignore a wound via Feel No Pain (0 = no FNP).
     """
     expected_attacks = _parse_dice(attacks)
     expected_damage  = _parse_dice(damage)
@@ -136,14 +141,22 @@ def calculate_weapon_matchup(
     p_wound = _p_success(_wound_roll_needed(strength, defender_toughness))
 
     effective_save = defender_save - ap
-    p_fail_save    = max(0.0, min(1.0, (effective_save - 1) / 6))
+    best_save = min(effective_save, invuln_save)
+    p_fail_save = max(0.0, min(1.0, (best_save - 1) / 6))
 
-    exp_dmg = expected_attacks * p_hit * p_wound * p_fail_save * expected_damage
+    p_fnp_pass = _p_success(fnp) if fnp > 0 else 0.0
+    p_damage_through = 1.0 - p_fnp_pass
+
+    exp_dmg = expected_attacks * p_hit * p_wound * p_fail_save * p_damage_through * expected_damage
 
     models_killed = exp_dmg / defender_wounds if defender_wounds > 0 else 0.0
     dpp = exp_dmg / attacker_points if attacker_points > 0 else 0.0
 
     return {
+        "p_hit": round(p_hit, 4),
+        "p_wound": round(p_wound, 4),
+        "p_fail_save": round(p_fail_save, 4),
+        "p_damage_through": round(p_damage_through, 4),
         "expected_damage": round(exp_dmg, 3),
         "models_killed":   round(models_killed, 3),
         "damage_per_point": round(dpp, 4),
