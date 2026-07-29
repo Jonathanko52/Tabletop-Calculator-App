@@ -182,6 +182,37 @@ class FactionRankOut(BaseModel):
     units: list[EfficiencyRankItem]
 
 
+# --- Custom Profile ---
+
+class CustomProfileRequest(BaseModel):
+    toughness: int
+    armor_save: int     # 2–7 (7 = no save)
+    invuln_save: int = 7  # 7 = none
+    fnp: int = 0          # 0 = none, else minimum roll needed (4/5/6)
+
+
+class WeaponCustomResult(BaseModel):
+    weapon_name: str
+    weapon_type: str
+    p_hit: float
+    p_wound: float
+    p_fail_save: float
+    p_damage_through: float
+    expected_damage: float
+    damage_per_point: float
+
+
+class CustomProfileOut(BaseModel):
+    unit_id: int
+    unit_name: str
+    points_cost: int
+    toughness: int
+    armor_save: int
+    invuln_save: int
+    fnp: int
+    weapons: list[WeaponCustomResult]
+
+
 # --- Match-up ---
 
 class MatchupRequest(BaseModel):
