@@ -94,6 +94,54 @@ def get_template_effectiveness(template_id: int, db: Session = Depends(get_db)):
     )
 
 
+@app.post("/effectiveness/template/{template_id}/custom", response_model=schemas.CustomProfileOut)
+def get_template_custom_profile(
+    template_id: int,
+    payload: schemas.CustomProfileRequest,
+    db: Session = Depends(get_db),
+):
+    tmpl = db.query(models.UnitTemplate).filter(models.UnitTemplate.id == template_id).first()
+    if not tmpl:
+        raise HTTPException(status_code=404, detail="Unit template not found")
+
+    weapons = []
+    for weapon in tmpl.weapons:
+        r = calculate_weapon_matchup(
+            attacks=weapon.attacks,
+            bs_ws=weapon.bs_ws,
+            strength=weapon.strength,
+            ap=weapon.ap,
+            damage=weapon.damage,
+            attacker_points=tmpl.points_cost,
+            defender_toughness=payload.toughness,
+            defender_save=payload.armor_save,
+            defender_wounds=1,
+            invuln_save=payload.invuln_save,
+            fnp=payload.fnp,
+        )
+        weapons.append(schemas.WeaponCustomResult(
+            weapon_name=weapon.name,
+            weapon_type=weapon.weapon_type,
+            p_hit=r["p_hit"],
+            p_wound=r["p_wound"],
+            p_fail_save=r["p_fail_save"],
+            p_damage_through=r["p_damage_through"],
+            expected_damage=r["expected_damage"],
+            damage_per_point=r["damage_per_point"],
+        ))
+
+    return schemas.CustomProfileOut(
+        unit_id=tmpl.id,
+        unit_name=tmpl.name,
+        points_cost=tmpl.points_cost,
+        toughness=payload.toughness,
+        armor_save=payload.armor_save,
+        invuln_save=payload.invuln_save,
+        fnp=payload.fnp,
+        weapons=weapons,
+    )
+
+
 @app.get("/effectiveness/faction/{faction}/ranking", response_model=schemas.FactionRankOut)
 def get_faction_ranking(
     faction: str,
