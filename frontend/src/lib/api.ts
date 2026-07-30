@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut, CustomProfileRequest, CustomProfileOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -73,6 +73,12 @@ export const getTemplateMatchup = (attackerTemplateId: number, defenderTemplateI
   request<TemplateMatchupOut>("/effectiveness/matchup-templates", {
     method: "POST",
     body: JSON.stringify({ attacker_template_id: attackerTemplateId, defender_template_id: defenderTemplateId }),
+  });
+
+export const getTemplateCustomProfile = (templateId: number, req: CustomProfileRequest) =>
+  request<CustomProfileOut>(`/effectiveness/template/${templateId}/custom`, {
+    method: "POST",
+    body: JSON.stringify(req),
   });
 
 export const getFactionRanking = (faction: string, profile: string) =>
