@@ -157,6 +157,35 @@ export interface FactionRankOut {
   units: EfficiencyRankItem[];
 }
 
+export interface CustomProfileRequest {
+  toughness: number;
+  armor_save: number;
+  invuln_save: number;
+  fnp: number;
+}
+
+export interface WeaponCustomResult {
+  weapon_name: string;
+  weapon_type: string;
+  p_hit: number;
+  p_wound: number;
+  p_fail_save: number;
+  p_damage_through: number;
+  expected_damage: number;
+  damage_per_point: number;
+}
+
+export interface CustomProfileOut {
+  unit_id: number;
+  unit_name: string;
+  points_cost: number;
+  toughness: number;
+  armor_save: number;
+  invuln_save: number;
+  fnp: number;
+  weapons: WeaponCustomResult[];
+}
+
 export interface WeaponMatchupResult {
   weapon_name: string;
   weapon_type: string;
