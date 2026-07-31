@@ -84,7 +84,7 @@ export default function DamageTable({ data }: Props) {
                       </span>
                       <span className="text-white font-medium">{weaponName}</span>
                     </div>
-                    <div className="text-gray-500 mt-0.5 pl-4">dmg / dmg/pt</div>
+                    <div className="text-gray-500 mt-0.5 pl-4">hit · wound · pen → dmg / dmg/pt</div>
                   </td>
 
                   {/* Data cells per profile */}
@@ -94,11 +94,18 @@ export default function DamageTable({ data }: Props) {
                       return <td key={profile} className="px-3 py-3 text-center text-gray-600">—</td>;
                     }
                     const cellColor = heatmapColor(result.damage_per_point, minDpp, maxDpp);
+                    const hasFnp = result.p_damage_through < 1.0;
                     return (
                       <td
                         key={profile}
                         className={`px-3 py-3 text-center ${cellColor} transition-colors`}
                       >
+                        <div className="text-[10px] text-gray-300 space-y-0.5 mb-1">
+                          <div>{(result.p_hit * 100).toFixed(0)}% hit</div>
+                          <div>{(result.p_wound * 100).toFixed(0)}% wound</div>
+                          <div>{(result.p_fail_save * 100).toFixed(0)}% pen</div>
+                          {hasFnp && <div>{(result.p_damage_through * 100).toFixed(0)}% fnp</div>}
+                        </div>
                         <div className="font-semibold text-white">{result.expected_damage.toFixed(2)}</div>
                         <div className="text-gray-300 text-[10px] mt-0.5">{result.damage_per_point.toFixed(4)}</div>
                       </td>

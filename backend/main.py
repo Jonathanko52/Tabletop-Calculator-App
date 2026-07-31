@@ -82,6 +82,10 @@ def get_template_effectiveness(template_id: int, db: Session = Depends(get_db)):
                 weapon_name=weapon.name,
                 weapon_type=weapon.weapon_type,
                 target_profile=entry["target_profile"],
+                p_hit=entry["p_hit"],
+                p_wound=entry["p_wound"],
+                p_fail_save=entry["p_fail_save"],
+                p_damage_through=entry["p_damage_through"],
                 expected_damage=entry["expected_damage"],
                 damage_per_point=entry["damage_per_point"],
             ))

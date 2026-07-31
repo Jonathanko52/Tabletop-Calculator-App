@@ -107,6 +107,10 @@ def calculate_weapon_damage(
         dpp = round(dmg / points_cost, 4) if points_cost > 0 else 0.0
         results.append({
             "target_profile": label,
+            "p_hit": round(p_hit, 4),
+            "p_wound": round(p_wound[i].item(), 4),
+            "p_fail_save": round(p_fail_save[i].item(), 4),
+            "p_damage_through": round(p_damage_through[i].item(), 4),
             "expected_damage": dmg,
             "damage_per_point": dpp,
         })

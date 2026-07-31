@@ -342,7 +342,7 @@ export default function EffectivenessPage() {
 
           {!rankingResult && !loadingRanking && !rankingError && (
             <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
-              Pick an army and target profile above, then click Rank Units.
+              Pick a faction and target profile above, then click Rank Units.
             </div>
           )}
         </>

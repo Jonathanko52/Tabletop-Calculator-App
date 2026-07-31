@@ -149,6 +149,10 @@ class WeaponEffectiveness(BaseModel):
     weapon_name: str
     weapon_type: str
     target_profile: str
+    p_hit: float
+    p_wound: float
+    p_fail_save: float
+    p_damage_through: float
     expected_damage: float
     damage_per_point: float
 

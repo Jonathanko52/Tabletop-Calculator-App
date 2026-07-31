@@ -132,6 +132,10 @@ export interface WeaponEffectiveness {
   weapon_name: string;
   weapon_type: string;
   target_profile: string;
+  p_hit: number;
+  p_wound: number;
+  p_fail_save: number;
+  p_damage_through: number;
   expected_damage: number;
   damage_per_point: number;
 }
