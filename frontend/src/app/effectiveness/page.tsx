@@ -324,10 +324,6 @@ export default function EffectivenessPage() {
             </button>
           </div>
 
-          {loadingRanking && (
-            <div className="text-gray-400 text-sm">Calculating…</div>
-          )}
-
           {rankingError && (
             <p className="text-red-400 text-sm">{rankingError}</p>
           )}
