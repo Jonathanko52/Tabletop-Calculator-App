@@ -126,12 +126,7 @@ def get_template_custom_profile(
         weapons.append(schemas.WeaponCustomResult(
             weapon_name=weapon.name,
             weapon_type=weapon.weapon_type,
-            p_hit=r["p_hit"],
-            p_wound=r["p_wound"],
-            p_fail_save=r["p_fail_save"],
-            p_damage_through=r["p_damage_through"],
-            expected_damage=r["expected_damage"],
-            damage_per_point=r["damage_per_point"],
+            **r,
         ))
 
     return schemas.CustomProfileOut(
