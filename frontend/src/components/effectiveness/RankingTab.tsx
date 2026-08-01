@@ -5,24 +5,16 @@ import type { UnitTemplate, FactionRankOut } from "@/types";
 import * as api from "@/lib/api";
 import RankingTable from "@/components/effectiveness/RankingTable";
 
-const PROFILES = [
-  "T3 5+",
-  "T4 3+",
-  "T4 3+ FNP",
-  "T5 3+",
-  "T6 3+",
-  "T8 2+",
-  "T9 3+",
-  "T12 2+",
-];
-
 interface Props {
   templates: UnitTemplate[];
 }
 
 export default function RankingTab({ templates }: Props) {
   const [rankingFaction, setRankingFaction] = useState<string>("");
-  const [rankingProfile, setRankingProfile] = useState<string>(PROFILES[1]);
+  const [rankingT, setRankingT] = useState(4);
+  const [rankingSave, setRankingSave] = useState(3);
+  const [rankingInvuln, setRankingInvuln] = useState(7);
+  const [rankingFnp, setRankingFnp] = useState(0);
   const [rankingResult, setRankingResult] = useState<FactionRankOut | null>(null);
   const [loadingRanking, setLoadingRanking] = useState(false);
   const [rankingError, setRankingError] = useState<string | null>(null);
@@ -33,7 +25,12 @@ export default function RankingTab({ templates }: Props) {
     setRankingError(null);
     setLoadingRanking(true);
     try {
-      const data = await api.getFactionRanking(rankingFaction, rankingProfile);
+      const data = await api.getFactionCustomRanking(rankingFaction, {
+        toughness: rankingT,
+        armor_save: rankingSave,
+        invuln_save: rankingInvuln,
+        fnp: rankingFnp,
+      });
       setRankingResult(data);
     } catch (e) {
       setRankingError(String(e));
@@ -60,15 +57,48 @@ export default function RankingTab({ templates }: Props) {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-300">Target Profile</label>
-          <select
-            value={rankingProfile}
-            onChange={(e) => { setRankingProfile(e.target.value); setRankingResult(null); }}
-            className="input"
-          >
-            {PROFILES.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
+          <label className="text-xs font-medium text-gray-400">Toughness</label>
+          <input
+            type="number"
+            min={1}
+            max={12}
+            value={rankingT}
+            onChange={(e) => setRankingT(Math.min(12, Math.max(1, Number(e.target.value))))}
+            className="input w-20"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-gray-400">Armour Save</label>
+          <select value={rankingSave} onChange={(e) => setRankingSave(Number(e.target.value))} className="input">
+            <option value={7}>No Save</option>
+            <option value={6}>6+</option>
+            <option value={5}>5+</option>
+            <option value={4}>4+</option>
+            <option value={3}>3+</option>
+            <option value={2}>2+</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-gray-400">Invuln Save</label>
+          <select value={rankingInvuln} onChange={(e) => setRankingInvuln(Number(e.target.value))} className="input">
+            <option value={7}>None</option>
+            <option value={6}>6++</option>
+            <option value={5}>5++</option>
+            <option value={4}>4++</option>
+            <option value={3}>3++</option>
+            <option value={2}>2++</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-gray-400">Feel No Pain</label>
+          <select value={rankingFnp} onChange={(e) => setRankingFnp(Number(e.target.value))} className="input">
+            <option value={0}>None</option>
+            <option value={4}>4+++</option>
+            <option value={5}>5+++</option>
+            <option value={6}>6+++</option>
           </select>
         </div>
 

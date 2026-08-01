@@ -86,3 +86,9 @@ export const getFactionRanking = (faction: string, profile: string) =>
     `/effectiveness/faction/${encodeURIComponent(faction)}/ranking?profile=${encodeURIComponent(profile)}`
   );
 
+export const getFactionCustomRanking = (faction: string, req: CustomProfileRequest) =>
+  request<FactionRankOut>(`/effectiveness/faction/${encodeURIComponent(faction)}/ranking/custom`, {
+    method: "POST",
+    body: JSON.stringify(req),
+  });
+

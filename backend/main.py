@@ -141,6 +141,54 @@ def get_template_custom_profile(
     )
 
 
+@app.post("/effectiveness/faction/{faction}/ranking/custom", response_model=schemas.FactionRankOut)
+def get_faction_custom_ranking(
+    faction: str,
+    payload: schemas.CustomProfileRequest,
+    db: Session = Depends(get_db),
+):
+    templates = db.query(models.UnitTemplate).filter(models.UnitTemplate.source == faction).all()
+
+    items: list[schemas.EfficiencyRankItem] = []
+    for tmpl in templates:
+        if not tmpl.weapons:
+            continue
+        total_dmg = 0.0
+        for weapon in tmpl.weapons:
+            r = calculate_weapon_matchup(
+                attacks=weapon.attacks,
+                bs_ws=weapon.bs_ws,
+                strength=weapon.strength,
+                ap=weapon.ap,
+                damage=weapon.damage,
+                attacker_points=tmpl.points_cost,
+                defender_toughness=payload.toughness,
+                defender_save=payload.armor_save,
+                defender_wounds=1,
+                invuln_save=payload.invuln_save,
+                fnp=payload.fnp,
+            )
+            total_dmg += r["expected_damage"]
+        dpp = round(total_dmg / tmpl.points_cost, 4) if tmpl.points_cost > 0 else 0.0
+        items.append(schemas.EfficiencyRankItem(
+            unit_id=tmpl.id,
+            unit_name=tmpl.name,
+            points_cost=tmpl.points_cost,
+            total_expected_damage=round(total_dmg, 3),
+            damage_per_point=dpp,
+        ))
+
+    items.sort(key=lambda x: x.damage_per_point, reverse=True)
+
+    profile_label = f"T{payload.toughness} {payload.armor_save}+"
+    if payload.invuln_save < 7:
+        profile_label += f" {payload.invuln_save}++"
+    if payload.fnp > 0:
+        profile_label += f" FNP {payload.fnp}+++"
+
+    return schemas.FactionRankOut(faction=faction, profile=profile_label, units=items)
+
+
 @app.get("/effectiveness/faction/{faction}/ranking", response_model=schemas.FactionRankOut)
 def get_faction_ranking(
     faction: str,
