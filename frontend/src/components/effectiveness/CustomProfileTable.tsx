@@ -46,8 +46,8 @@ export default function CustomProfileTable({ result }: { result: CustomProfileOu
               </tr>
             </thead>
             <tbody>
-              {result.weapons.map((w, i) => (
-                <tr key={i} className="border-b border-gray-700/50 last:border-0 hover:bg-gray-700/30">
+              {result.weapons.map((w) => (
+                <tr key={w.weapon_name} className="border-b border-gray-700/50 last:border-0 hover:bg-gray-700/30">
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-1.5">
                       <span className={w.weapon_type === "ranged" ? "text-blue-400" : "text-orange-400"}>
