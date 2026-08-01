@@ -268,10 +268,6 @@ export default function EffectivenessPage() {
             </button>
           </div>
 
-          {loadingMatchup && (
-            <div className="text-gray-400 text-sm">Calculating…</div>
-          )}
-
           {matchupError && (
             <p className="text-red-400 text-sm">{matchupError}</p>
           )}
