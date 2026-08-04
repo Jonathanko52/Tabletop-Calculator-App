@@ -251,3 +251,48 @@ class TemplateMatchupOut(BaseModel):
     weapons: list[WeaponMatchupResult]
     total_expected_damage: float
     total_models_killed: float
+
+
+# --- Flex Match-up ---
+
+class CustomWeaponInput(BaseModel):
+    name: str = "Custom Weapon"
+    weapon_type: str = "ranged"
+    attacks: str = "1"
+    bs_ws: int = 4
+    strength: int = 4
+    ap: int = 0
+    damage: str = "1"
+
+
+class CustomAttackerInput(BaseModel):
+    name: str = "Custom Unit"
+    points_cost: int = 100
+    weapon: CustomWeaponInput
+
+
+class CustomDefenderInput(BaseModel):
+    name: str = "Custom Target"
+    toughness: int = 4
+    armor_save: int = 3
+    invuln_save: int = 7
+    fnp: int = 0
+    wounds: int = 1
+    points_cost: int = 100
+
+
+class FlexMatchupRequest(BaseModel):
+    attacker_template_id: Optional[int] = None
+    custom_attacker: Optional[CustomAttackerInput] = None
+    defender_template_id: Optional[int] = None
+    custom_defender: Optional[CustomDefenderInput] = None
+
+
+class FlexMatchupOut(BaseModel):
+    attacker_name: str
+    defender_name: str
+    attacker_points: int
+    weapons: list[WeaponMatchupResult]
+    total_expected_damage: float
+    total_models_killed: float
+    damage_per_point: float
