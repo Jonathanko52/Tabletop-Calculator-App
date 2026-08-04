@@ -272,6 +272,74 @@ def get_template_matchup(payload: schemas.MatchupTemplateRequest, db: Session = 
     )
 
 
+@app.post("/effectiveness/flex-matchup", response_model=schemas.FlexMatchupOut)
+def get_flex_matchup(payload: schemas.FlexMatchupRequest, db: Session = Depends(get_db)):
+    # Resolve attacker
+    if payload.attacker_template_id is not None:
+        tmpl = db.query(models.UnitTemplate).filter(models.UnitTemplate.id == payload.attacker_template_id).first()
+        if not tmpl:
+            raise HTTPException(status_code=404, detail="Attacker template not found")
+        attacker_name = tmpl.name
+        attacker_points = tmpl.points_cost
+        weapons_to_calc = [
+            (w.name, w.weapon_type, w.attacks, w.bs_ws, w.strength, w.ap, w.damage)
+            for w in tmpl.weapons
+        ]
+    else:
+        ca = payload.custom_attacker
+        if ca is None:
+            raise HTTPException(status_code=422, detail="Provide attacker_template_id or custom_attacker")
+        attacker_name = ca.name
+        attacker_points = ca.points_cost
+        w = ca.weapon
+        weapons_to_calc = [(w.name, w.weapon_type, w.attacks, w.bs_ws, w.strength, w.ap, w.damage)]
+
+    # Resolve defender
+    if payload.defender_template_id is not None:
+        tmpl = db.query(models.UnitTemplate).filter(models.UnitTemplate.id == payload.defender_template_id).first()
+        if not tmpl:
+            raise HTTPException(status_code=404, detail="Defender template not found")
+        defender_name = tmpl.name
+        d_toughness, d_save, d_invuln, d_fnp, d_wounds = tmpl.toughness, tmpl.save, 7, 0, tmpl.wounds
+    else:
+        cd = payload.custom_defender
+        if cd is None:
+            raise HTTPException(status_code=422, detail="Provide defender_template_id or custom_defender")
+        defender_name = cd.name
+        d_toughness, d_save, d_invuln, d_fnp, d_wounds = cd.toughness, cd.armor_save, cd.invuln_save, cd.fnp, cd.wounds
+
+    weapon_results = []
+    for (wname, wtype, attacks, bs_ws, strength, ap, damage) in weapons_to_calc:
+        r = calculate_weapon_matchup(
+            attacks=attacks,
+            bs_ws=bs_ws,
+            strength=strength,
+            ap=ap,
+            damage=damage,
+            attacker_points=attacker_points,
+            defender_toughness=d_toughness,
+            defender_save=d_save,
+            defender_wounds=d_wounds,
+            invuln_save=d_invuln,
+            fnp=d_fnp,
+        )
+        weapon_results.append(schemas.WeaponMatchupResult(weapon_name=wname, weapon_type=wtype, **r))
+
+    total_dmg = round(sum(w.expected_damage for w in weapon_results), 3)
+    total_killed = round(total_dmg / d_wounds, 3) if d_wounds > 0 else 0.0
+    dpp = round(total_dmg / attacker_points, 4) if attacker_points > 0 else 0.0
+
+    return schemas.FlexMatchupOut(
+        attacker_name=attacker_name,
+        defender_name=defender_name,
+        attacker_points=attacker_points,
+        weapons=weapon_results,
+        total_expected_damage=total_dmg,
+        total_models_killed=total_killed,
+        damage_per_point=dpp,
+    )
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
