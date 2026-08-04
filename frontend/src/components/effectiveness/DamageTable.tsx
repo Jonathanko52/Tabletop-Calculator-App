@@ -84,7 +84,7 @@ export default function DamageTable({ data }: Props) {
                       </span>
                       <span className="text-white font-medium">{weaponName}</span>
                     </div>
-                    <div className="text-gray-500 mt-0.5 pl-4">hit · wound · pen → dmg / dmg/pt</div>
+                    <div className="text-gray-500 mt-0.5 pl-4">hit · wound · pen → exp. dmg / dmg/pt</div>
                   </td>
 
                   {/* Data cells per profile */}
@@ -106,8 +106,14 @@ export default function DamageTable({ data }: Props) {
                           <div>{(result.p_fail_save * 100).toFixed(0)}% pen</div>
                           {hasFnp && <div>{(result.p_damage_through * 100).toFixed(0)}% fnp</div>}
                         </div>
-                        <div className="font-semibold text-white">{result.expected_damage.toFixed(2)}</div>
-                        <div className="text-gray-300 text-[10px] mt-0.5">{result.damage_per_point.toFixed(4)}</div>
+                        <div className="font-semibold text-white">
+                          {result.expected_damage.toFixed(2)}
+                          <span className="text-gray-400 font-normal text-[9px] ml-1">exp. dmg</span>
+                        </div>
+                        <div className="text-gray-300 text-[10px] mt-0.5">
+                          {result.damage_per_point.toFixed(4)}
+                          <span className="text-gray-500 text-[9px] ml-1">dmg/pt</span>
+                        </div>
                       </td>
                     );
                   })}
