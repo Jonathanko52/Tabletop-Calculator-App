@@ -190,6 +190,49 @@ export interface CustomProfileOut {
   weapons: WeaponCustomResult[];
 }
 
+export interface CustomWeaponInput {
+  name: string;
+  weapon_type: "ranged" | "melee";
+  attacks: string;
+  bs_ws: number;
+  strength: number;
+  ap: number;
+  damage: string;
+}
+
+export interface CustomAttackerInput {
+  name: string;
+  points_cost: number;
+  weapon: CustomWeaponInput;
+}
+
+export interface CustomDefenderInput {
+  name: string;
+  toughness: number;
+  armor_save: number;
+  invuln_save: number;
+  fnp: number;
+  wounds: number;
+  points_cost: number;
+}
+
+export interface FlexMatchupRequest {
+  attacker_template_id?: number | null;
+  custom_attacker?: CustomAttackerInput | null;
+  defender_template_id?: number | null;
+  custom_defender?: CustomDefenderInput | null;
+}
+
+export interface FlexMatchupOut {
+  attacker_name: string;
+  defender_name: string;
+  attacker_points: number;
+  weapons: WeaponMatchupResult[];
+  total_expected_damage: number;
+  total_models_killed: number;
+  damage_per_point: number;
+}
+
 export interface WeaponMatchupResult {
   weapon_name: string;
   weapon_type: string;

@@ -1,4 +1,4 @@
-import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut, CustomProfileRequest, CustomProfileOut } from "@/types";
+import type { Army, ArmyCreate, ArmyImport, Unit, UnitCreate, UnitStatus, UnitTemplate, UnitTemplateCreate, UnitEffectivenessOut, TemplateMatchupOut, FactionRankOut, CustomProfileRequest, CustomProfileOut, FlexMatchupRequest, FlexMatchupOut } from "@/types";
 
 const BASE = "http://localhost:8000";
 
@@ -85,6 +85,12 @@ export const getFactionRanking = (faction: string, profile: string) =>
   request<FactionRankOut>(
     `/effectiveness/faction/${encodeURIComponent(faction)}/ranking?profile=${encodeURIComponent(profile)}`
   );
+
+export const getFlexMatchup = (req: FlexMatchupRequest) =>
+  request<FlexMatchupOut>("/effectiveness/flex-matchup", {
+    method: "POST",
+    body: JSON.stringify(req),
+  });
 
 export const getFactionCustomRanking = (faction: string, req: CustomProfileRequest) =>
   request<FactionRankOut>(`/effectiveness/faction/${encodeURIComponent(faction)}/ranking/custom`, {
