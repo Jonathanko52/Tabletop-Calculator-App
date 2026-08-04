@@ -108,11 +108,11 @@ export default function DamageTable({ data }: Props) {
                         </div>
                         <div className="font-semibold text-white">
                           {result.expected_damage.toFixed(2)}
-                          <span className="text-gray-400 font-normal text-[9px] ml-1">exp. dmg</span>
+                          <span className="text-gray-300 font-normal text-[10px] ml-1">exp. dmg</span>
                         </div>
                         <div className="text-gray-300 text-[10px] mt-0.5">
                           {result.damage_per_point.toFixed(4)}
-                          <span className="text-gray-500 text-[9px] ml-1">dmg/pt</span>
+                          <span className="text-gray-300 text-[10px] ml-1">dmg/pt</span>
                         </div>
                       </td>
                     );
