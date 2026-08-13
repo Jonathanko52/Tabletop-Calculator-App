@@ -12,7 +12,7 @@ interface Props {
 
 export default function FactionUnitPicker({ label, templates, selectedId, onChange }: Props) {
   const factions = [...new Set(templates.map((t) => t.source))].sort();
-  const [faction, setFaction] = useState<string>(factions[0] ?? "");
+  const [faction, setFaction] = useState<string>("");
 
   const factionUnits = templates.filter((t) => t.source === faction);
 
@@ -34,6 +34,7 @@ export default function FactionUnitPicker({ label, templates, selectedId, onChan
           onChange={(e) => setFaction(e.target.value)}
           className="input"
         >
+          <option value="" disabled>— pick a faction —</option>
           {factions.map((f) => (
             <option key={f} value={f}>{f}</option>
           ))}
@@ -42,7 +43,7 @@ export default function FactionUnitPicker({ label, templates, selectedId, onChan
           value={selectedId ?? ""}
           onChange={(e) => onChange(Number(e.target.value))}
           className="input flex-1"
-          disabled={factionUnits.length === 0}
+          disabled={!faction || factionUnits.length === 0}
         >
           <option value="" disabled>— pick a unit —</option>
           {factionUnits.map((t) => (
