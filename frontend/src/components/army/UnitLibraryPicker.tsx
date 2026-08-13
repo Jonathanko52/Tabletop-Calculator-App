@@ -67,6 +67,53 @@ export default function UnitLibraryPicker({
 
   return (
     <div className="flex flex-col gap-2">
+      {/* Filters — always visible, disabled until a faction is selected */}
+      <div className={`flex flex-wrap gap-2 items-center${!faction ? " opacity-40 pointer-events-none" : ""}`}>
+        <input
+          type="number"
+          placeholder="Min pts"
+          value={minPts}
+          onChange={(e) => { onMinPtsChange(e.target.value); setSelectedId(""); }}
+          className="input w-20 text-xs"
+          min={0}
+        />
+        <span className="text-gray-500 text-xs">–</span>
+        <input
+          type="number"
+          placeholder="Max pts"
+          value={maxPts}
+          onChange={(e) => { onMaxPtsChange(e.target.value); setSelectedId(""); }}
+          className="input w-20 text-xs"
+          min={0}
+        />
+
+        <button
+          type="button"
+          onClick={() => { onFilterBattlelineChange(!filterBattleline); setSelectedId(""); }}
+          className={chipClass(filterBattleline)}
+        >
+          Battleline
+        </button>
+        <button
+          type="button"
+          onClick={() => { onFilterCharacterChange(!filterCharacter); setSelectedId(""); }}
+          className={chipClass(filterCharacter)}
+        >
+          Character
+        </button>
+
+        <select
+          value={sort}
+          onChange={(e) => { onSortChange(e.target.value as SortKey); setSelectedId(""); }}
+          className="input text-xs ml-auto"
+        >
+          <option value="pts-asc">Pts ↑</option>
+          <option value="pts-desc">Pts ↓</option>
+          <option value="alpha-asc">A → Z</option>
+          <option value="alpha-desc">Z → A</option>
+        </select>
+      </div>
+
       {/* Faction selector */}
       <select
         value={faction}
@@ -79,55 +126,6 @@ export default function UnitLibraryPicker({
           <option key={f} value={f}>{f}</option>
         ))}
       </select>
-
-      {/* Filters — only shown once a faction is selected */}
-      {faction && (
-        <div className="flex flex-wrap gap-2 items-center">
-          <input
-            type="number"
-            placeholder="Min pts"
-            value={minPts}
-            onChange={(e) => { onMinPtsChange(e.target.value); setSelectedId(""); }}
-            className="input w-20 text-xs"
-            min={0}
-          />
-          <span className="text-gray-500 text-xs">–</span>
-          <input
-            type="number"
-            placeholder="Max pts"
-            value={maxPts}
-            onChange={(e) => { onMaxPtsChange(e.target.value); setSelectedId(""); }}
-            className="input w-20 text-xs"
-            min={0}
-          />
-
-          <button
-            type="button"
-            onClick={() => { onFilterBattlelineChange(!filterBattleline); setSelectedId(""); }}
-            className={chipClass(filterBattleline)}
-          >
-            Battleline
-          </button>
-          <button
-            type="button"
-            onClick={() => { onFilterCharacterChange(!filterCharacter); setSelectedId(""); }}
-            className={chipClass(filterCharacter)}
-          >
-            Character
-          </button>
-
-          <select
-            value={sort}
-            onChange={(e) => { onSortChange(e.target.value as SortKey); setSelectedId(""); }}
-            className="input text-xs ml-auto"
-          >
-            <option value="pts-asc">Pts ↑</option>
-            <option value="pts-desc">Pts ↓</option>
-            <option value="alpha-asc">A → Z</option>
-            <option value="alpha-desc">Z → A</option>
-          </select>
-        </div>
-      )}
 
       {/* Unit selector + Add */}
       <div className="flex gap-2 items-center">
