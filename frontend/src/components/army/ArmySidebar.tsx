@@ -152,13 +152,17 @@ export default function ArmySidebar({
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="input"
           />
-          <input
+          <select
             required
-            placeholder="Faction (e.g. Space Marines)"
             value={form.faction}
             onChange={(e) => setForm({ ...form, faction: e.target.value })}
             className="input"
-          />
+          >
+            <option value="" disabled>— pick a faction —</option>
+            {[...new Set(unitTemplates.map((t) => t.source))].sort().map((f) => (
+              <option key={f} value={f}>{f}</option>
+            ))}
+          </select>
           <input
             type="number"
             placeholder="Points limit"
