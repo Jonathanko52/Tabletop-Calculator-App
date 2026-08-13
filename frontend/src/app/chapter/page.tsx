@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Unit } from "@/types";
 import ChapterUnitCard from "@/components/chapter/ChapterUnitCard";
 import { useArmies } from "@/hooks/useArmies";
@@ -8,12 +8,6 @@ import { useArmies } from "@/hooks/useArmies";
 export default function ChapterPage() {
   const { armies, setArmies, loading, error, reload } = useArmies();
   const [selectedId, setSelectedId] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (armies.length > 0) {
-      setSelectedId((prev) => prev ?? armies[0].id);
-    }
-  }, [armies]);
 
   const selectedArmy = armies.find((a) => a.id === selectedId) ?? null;
   const visibleUnits =
@@ -74,6 +68,7 @@ export default function ChapterPage() {
             onChange={(e) => setSelectedId(Number(e.target.value))}
             className="input max-w-xs"
           >
+            <option value="" disabled>— pick army —</option>
             {armies.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name} ({a.faction})
