@@ -43,21 +43,34 @@ export default function MatchupTable({ result }: { result: TemplateMatchupOut })
                 </tr>
               </thead>
               <tbody>
-                {weapons.map((w, i) => (
-                  <tr key={i} className="border-b border-gray-700/50 hover:bg-gray-700/30">
-                    <td className="px-4 py-2.5 text-white font-medium">{w.weapon_name}</td>
-                    <td className="px-4 py-2.5 text-gray-400 capitalize">{w.weapon_type}</td>
-                    <td className="px-4 py-2.5 text-right text-amber-300 font-mono">
-                      {w.expected_damage.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-2.5 text-right text-sky-300 font-mono">
-                      {w.models_killed.toFixed(3)}
-                    </td>
-                    <td className="px-4 py-2.5 text-right text-green-300 font-mono">
-                      {w.damage_per_point.toFixed(4)}
-                    </td>
-                  </tr>
-                ))}
+                {(["ranged", "melee"] as const).map((type) => {
+                  const group = weapons.filter((w) => w.weapon_type === type);
+                  if (group.length === 0) return null;
+                  return (
+                    <>
+                      <tr key={`header-${type}`} className="bg-gray-700/40 border-b border-gray-700">
+                        <td colSpan={5} className="px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-400">
+                          {type === "ranged" ? "Ranged" : "Melee"}
+                        </td>
+                      </tr>
+                      {group.map((w, i) => (
+                        <tr key={`${type}-${i}`} className="border-b border-gray-700/50 hover:bg-gray-700/30">
+                          <td className="px-4 py-2.5 text-white font-medium">{w.weapon_name}</td>
+                          <td className="px-4 py-2.5 text-gray-400 capitalize">{w.weapon_type}</td>
+                          <td className="px-4 py-2.5 text-right text-amber-300 font-mono">
+                            {w.expected_damage.toFixed(2)}
+                          </td>
+                          <td className="px-4 py-2.5 text-right text-sky-300 font-mono">
+                            {w.models_killed.toFixed(3)}
+                          </td>
+                          <td className="px-4 py-2.5 text-right text-green-300 font-mono">
+                            {w.damage_per_point.toFixed(4)}
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  );
+                })}
                 <tr className="border-t-2 border-gray-600 font-semibold bg-gray-800">
                   <td className="px-4 py-3 text-gray-300" colSpan={2}>
                     Total
