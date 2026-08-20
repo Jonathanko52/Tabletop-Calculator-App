@@ -30,7 +30,7 @@ class Unit(Base):
     wounds = Column(Integer, default=1)
     leadership = Column(Integer, default=7)
     oc = Column(Integer, default=1)
-    status = Column(String, default="unpainted")  # 'unpainted' | 'painted' | 'ready'
+    status = Column(String, default="unpainted")  # 'unassembled' | 'unpainted' | 'painted' | 'ready'
     model_count = Column(Integer, default=1)
     nickname = Column(String, default="")
     notes    = Column(String, default="")
