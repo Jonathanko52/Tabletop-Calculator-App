@@ -24,7 +24,7 @@ export interface WeaponCreate {
   special: string;
 }
 
-export type UnitStatus = "unpainted" | "painted" | "ready";
+export type UnitStatus = "unassembled" | "unpainted" | "painted" | "ready";
 
 export interface Unit {
   id: number;
