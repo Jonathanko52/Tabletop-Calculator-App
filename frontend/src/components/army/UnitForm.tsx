@@ -149,6 +149,7 @@ export default function UnitForm({ initial, onSave, onCancel }: Props) {
             onChange={(e) => setField("status", e.target.value as UnitStatus)}
             className="input"
           >
+            <option value="unassembled">Unassembled</option>
             <option value="unpainted">Unpainted</option>
             <option value="painted">Painted</option>
             <option value="ready">Ready</option>
