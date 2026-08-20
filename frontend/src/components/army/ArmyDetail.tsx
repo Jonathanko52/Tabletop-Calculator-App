@@ -383,7 +383,7 @@ export default function ArmyDetail({
       )}
 
       {/* Kanban board */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {COLUMNS.map(({ status, label, accent }) => {
           const colUnits = army.units.filter((u) => u.status === status);
           const colPoints = colUnits.reduce((s, u) => s + u.points_cost, 0);
