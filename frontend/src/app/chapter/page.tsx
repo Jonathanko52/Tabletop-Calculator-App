@@ -78,7 +78,7 @@ export default function ChapterPage() {
       {/* Unit list */}
       {selectedArmy && visibleUnits.length === 0 && (
         <div className="bg-gray-800/50 rounded-xl p-8 text-center text-gray-500 text-sm border border-gray-700 border-dashed">
-          No painted or ready units in this army yet. Mark units as Painted or Ready on the Army Management page.
+          No units in this army yet. Add units on the Army Management page.
         </div>
       )}
 
