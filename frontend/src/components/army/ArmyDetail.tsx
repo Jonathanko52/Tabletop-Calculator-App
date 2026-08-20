@@ -19,9 +19,10 @@ interface Props {
 }
 
 const COLUMNS: { status: UnitStatus; label: string; accent: string }[] = [
-  { status: "unpainted", label: "Unpainted", accent: "border-gray-600" },
-  { status: "painted",   label: "Painted",   accent: "border-amber-500" },
-  { status: "ready",     label: "Ready",     accent: "border-green-500" },
+  { status: "unassembled", label: "Unassembled", accent: "border-slate-500"  },
+  { status: "unpainted",   label: "Unpainted",   accent: "border-gray-600"   },
+  { status: "painted",     label: "Painted",     accent: "border-amber-500"  },
+  { status: "ready",       label: "Ready",       accent: "border-green-500"  },
 ];
 
 type AddMode = "none" | "picker" | "form-blank" | "form-template";
