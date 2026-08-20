@@ -10,10 +10,7 @@ export default function ChapterPage() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const selectedArmy = armies.find((a) => a.id === selectedId) ?? null;
-  const visibleUnits =
-    selectedArmy?.units.filter(
-      (u) => u.status === "painted" || u.status === "ready"
-    ) ?? [];
+  const visibleUnits = selectedArmy?.units ?? [];
 
   function handleUnitUpdate(updated: Unit) {
     setArmies((prev) =>
